@@ -10,19 +10,5 @@ export interface IEngineOption {
 
     images: {
         imageDomain: string,
-        badgeDomain: string,
-        furnitureDomain: string,
-        figureDomain: string
-    },
-    room: {
-        tiles: {
-            defaultMaterial: string,
-            defaultThickness: number
-        },
-        walls: {
-            defaultMaterial: string,
-            defaultThickness: number,
-            defaultHeight: number
-        }
-    },
+    }
 }

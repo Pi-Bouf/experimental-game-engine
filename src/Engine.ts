@@ -1,9 +1,6 @@
 import { AssetsManager } from './assets/AssetsManager';
-import { AvatarModule } from './objects/avatars/AvatarModule';
 import { DoubleTicker } from './ticker/DoubleTicker';
 import { IEngineOption } from './interfaces/IEngineOption';
-import { ItemModule } from './objects/items/ItemModule';
-import { MapModule } from './objects/map/MapModule';
 import { Matrix, Rectangle, Renderer, SCALE_MODES, settings } from 'pixi.js';
 import { Stage } from './geometry/Stage';
 
@@ -19,10 +16,6 @@ export class Engine {
     public stage: Stage;
     public ticker: DoubleTicker;
 
-    public itemModule: ItemModule;
-    public mapModule: MapModule;
-    public avatarModule: AvatarModule;
-
     constructor(
         private options: IEngineOption,
     ) {
@@ -36,7 +29,7 @@ export class Engine {
         });
         this.canvasContainer = options.canvasContainer;
         this.canvasContainer.innerHTML = '';
-        this.canvasContainer.append(this.renderer.view);
+        this.canvasContainer.append(this.renderer.view as HTMLCanvasElement);
 
         // TODO remove ? Yes
         console.log(window.devicePixelRatio);
@@ -46,17 +39,11 @@ export class Engine {
         this.ticker.attachCallbacks(() => this.stage.animationTick(), () => this.stage.displayTick());
 
         this.assetsManager = new AssetsManager();
-        this.itemModule = new ItemModule(this);
-        this.mapModule = new MapModule(this);
-        this.avatarModule = new AvatarModule(this);
 
         // new PixiInspector(this.stage);
     }
 
     public async init() {
         await this.assetsManager.init();
-        this.itemModule.init();
-        this.mapModule.init();
-        this.avatarModule.init();
     }
 }
