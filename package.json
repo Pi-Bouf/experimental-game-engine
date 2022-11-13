@@ -1,7 +1,7 @@
 {
-  "name": "@holo5/engine",
-  "version": "0.1.0",
-  "description": "Holo5 Power !",
+  "name": "game-engine",
+  "version": "0.0.1",
+  "description": "Game engine attempt :)",
   "license": "UNLICENSED",
   "author": "Pi-Bouf",
   "source": "src/Engine.ts",
@@ -12,41 +12,26 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@holo5/roombuilder": "^0.4.2",
-    "core-js": "3",
-    "mementojs": "^1.4.0",
-    "pixi.js": "6.5.1",
-    "ts-bus": "^2.3.1"
+    "pixi.js": "7.0.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
-    "eslint": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint": "^8.27.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "javascript-obfuscator": "^4.0.0",
-    "parcel": "2.6.2",
+    "parcel": "2.8.0",
+    "punycode": "^1.4.1",
     "querystring-es3": "^0.2.1",
-    "sass": "^1.54.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.4"
   },
   "keywords": [
-    "holo5",
-    "habbo",
-    "extractor",
     "pixijs",
     "engine",
     "webgl"
-  ],
-  "homepage": "https://github.com/Holo5/Holo5-Client#readme",
-  "bugs": {
-    "url": "https://github.com/Holo5/Holo5-Client/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Holo5/Engine.git"
-  }
+  ]
 }
