@@ -1,14 +1,15 @@
+import { AssetsClass } from '@pixi/assets/lib/Assets';
 import { IAssetsManager } from './interface/IAssetsManager';
-import { Loader } from 'pixi.js';
 
-export class AssetsManager extends Loader implements IAssetsManager {
+export class AssetsManager extends AssetsClass implements IAssetsManager {
     public constructor() {
-        super(undefined, 5);
-
+        super();
+        
         this.add('badge', 'HC1.png');
     }
 
     public async init(): Promise<void> {
+
         return new Promise((resolve, reject) => {
             this.load(() => {
                 resolve();
