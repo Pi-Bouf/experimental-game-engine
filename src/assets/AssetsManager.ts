@@ -1,5 +1,5 @@
 import { IAssetsManager } from './interface/IAssetsManager';
-import { Loader, LoaderResource } from 'pixi.js';
+import { Loader } from 'pixi.js';
 
 export class AssetsManager extends Loader implements IAssetsManager {
     public constructor() {
