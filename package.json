@@ -9,7 +9,8 @@
     "watch": "parcel example/index.html",
     "build": "parcel build example/index.html",
     "lint": "eslint --ext .js,.ts ./src --color",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "assets": "http-server assets --cors -p 8081 -d "
   },
   "dependencies": {
     "pixi.js": "7.0.4"
@@ -23,6 +24,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "http-server": "^14.1.1",
     "javascript-obfuscator": "^4.0.0",
     "parcel": "2.8.0",
     "punycode": "^1.4.1",
