@@ -38,7 +38,7 @@ export class Engine {
         this.ticker = new DoubleTicker(options.maxAnimationRate, options.maxDisplayRate);
         this.ticker.attachCallbacks(() => this.stage.animationTick(), () => this.stage.displayTick());
 
-        this.assetsManager = new AssetsManager();
+        this.assetsManager = new AssetsManager(this.options.images.imageDomain);
 
         // new PixiInspector(this.stage);
     }

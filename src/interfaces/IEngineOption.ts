@@ -6,8 +6,7 @@ export interface IEngineOption {
     backgroundAlpha: number,
     maxAnimationRate: number,
     maxDisplayRate: number,
-    mouseEventFrequency: number
-
+    mouseEventFrequency: number,
     images: {
         imageDomain: string,
     }

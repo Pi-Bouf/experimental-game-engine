@@ -1,7 +1,7 @@
-import { LoaderResource } from 'pixi.js';
+import { Texture } from 'pixi.js';
 
 export interface IAssetsManager {
     has(id: string, url: string): boolean;
 
-    get(id: string): LoaderResource;
+    get(id: string): Texture;
 }

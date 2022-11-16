@@ -1,4 +1,3 @@
-import { Configuration } from '../../example/conf';
 import { Container, DisplayObject } from 'pixi.js';
 import { Engine } from '../Engine';
 import { EventCategory } from '../sprite/enum/EventCategory';
@@ -26,7 +25,7 @@ export class Stage extends Container {
         this.interactiveChildren = false;
 
         this.lastHoverTick = 0;
-        this.minHoverTick = 1000 / Configuration.canvas.hoverFrequency;
+        this.minHoverTick = 1000 / 600000;
 
         this.eventManager = new EventManager();
         this.rendererGeometry = new GeometryManager(this);
