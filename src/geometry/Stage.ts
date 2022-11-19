@@ -76,7 +76,7 @@ export class Stage extends Container {
     private checkHovered(now: number) {
         if (now - this.lastHoverTick > this.minHoverTick) {
             let hovered = this.children.find((child) => {
-                return (child.getEventCategory() === EventCategory.FLOOR || child.getEventCategory() === EventCategory.AVATARS) && child.checkEvents(
+                return (child.getEventCategory() === EventCategory.FLOOR || child.getEventCategory() === EventCategory.AVATAR) && child.checkEvents(
                     this.eventManager.currentEvents);
             });
 
@@ -85,7 +85,7 @@ export class Stage extends Container {
                     console.log('FLOOR');
                 }
 
-                if (hovered.getEventCategory() === EventCategory.AVATARS) {
+                if (hovered.getEventCategory() === EventCategory.AVATAR) {
                     document.body.style.cursor = 'pointer';
                 } else {
                     document.body.style.cursor = 'default';

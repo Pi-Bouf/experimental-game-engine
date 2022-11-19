@@ -35,7 +35,12 @@ export class GeometryManager {
     }
 
     public checkStageSize() {
-        this.stageBounds = new Rectangle(0, 0, this.stage.engine.canvasContainer.clientWidth | 0, this.stage.engine.canvasContainer.clientHeight | 0);
+        this.stageBounds = new Rectangle(
+            0,
+            0,
+            this.stage.engine.canvasContainer.clientWidth | 0,
+            this.stage.engine.canvasContainer.clientHeight | 0,
+        );
         this.needSizeUpdate = true;
     }
 }
