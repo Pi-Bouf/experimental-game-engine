@@ -65,7 +65,7 @@ export class Stage extends Container {
             if (child.needTweenUpdate()) child.updateTween(now);
         });
 
-        this.checkHovered(now);
+        // this.checkHovered(now);
 
         this.eventManager.reset();
         this.rendererGeometry.reset();
