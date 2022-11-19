@@ -1,12 +1,12 @@
-import { AssetsManager } from '../../assets/AssetsManager';
 import { EventCategory } from '../enum/EventCategory';
+import { IAssetsManager } from '../../assets/interface/IAssetsManager';
 import { ICurrentEvents } from '../../events/interface/ICurrentEvents';
-import { IVector3D } from '@holo5/roombuilder';
+import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
 import { Point, Rectangle, Sprite } from 'pixi.js';
 
 export interface IGraphic extends Sprite {
     needInitialization(): boolean;
-    initialize(resourceManager: AssetsManager): void;
+    initialize(resourceManager: IAssetsManager): void;
     setInitialized(): void;
     requestInitialization(): void;
 
@@ -22,8 +22,8 @@ export interface IGraphic extends Sprite {
     updatePosition(point: Point): void;
     setPositionUpdated(): void;
     requestPositionUpdate(): void;
-    setPosition(position: IVector3D): void;
-    getCurrentPosition(): IVector3D;
+    setPosition(position3D: IPosition3D): void;
+    getCurrentPosition(): IPosition3D;
 
     getBounds(): Rectangle;
     updateBounds(): void;

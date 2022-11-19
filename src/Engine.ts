@@ -1,15 +1,10 @@
 import { AssetsManager } from './assets/AssetsManager';
 import { DoubleTicker } from './ticker/DoubleTicker';
 import { IEngineOption } from './interfaces/IEngineOption';
-import { Matrix, Rectangle, Renderer, SCALE_MODES, settings } from 'pixi.js';
+import { Renderer, SCALE_MODES, settings } from 'pixi.js';
 import { Stage } from './geometry/Stage';
 
 export class Engine {
-    public static TOP_ISO_MATRIX = new Matrix(1, 0.5, -1, 0.5);
-    public static LEFT_ISO_MATRIX = new Matrix(1, 0.5, 0, 1);
-    public static RIGHT_ISO_MATRIX = new Matrix(1, -0.5, 0, 1);
-    public static AVATAR_BOUNDS = new Rectangle(-38, -140, 140, 160);
-
     public canvasContainer: HTMLElement;
     public renderer: Renderer;
     public assetsManager: AssetsManager;
@@ -30,9 +25,6 @@ export class Engine {
         this.canvasContainer = options.canvasContainer;
         this.canvasContainer.innerHTML = '';
         this.canvasContainer.append(this.renderer.view as HTMLCanvasElement);
-
-        // TODO remove ? Yes
-        console.log(window.devicePixelRatio);
 
         this.stage = new Stage(this);
         this.ticker = new DoubleTicker(options.maxAnimationRate, options.maxDisplayRate);

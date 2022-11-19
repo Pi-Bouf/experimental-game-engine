@@ -8,8 +8,10 @@ const sandbox = new Engine({
     mouseEventFrequency: 50,
     autoResize: true,
     maxAnimationRate: 8,
-    maxDisplayRate: 140,
+    maxDisplayRate: 20,
     images: {
         imageDomain: 'http://127.0.0.1:8082/',
     },
 });
+
+sandbox.stage.addChild();

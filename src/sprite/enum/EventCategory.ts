@@ -1,7 +1,7 @@
 export enum EventCategory {
     NONE,
     FLOOR,
-    WALL,
-    FURNI,
-    AVATARS,
+    BUILD,
+    OBJECT,
+    AVATAR,
 }

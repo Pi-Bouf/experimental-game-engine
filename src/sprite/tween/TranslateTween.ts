@@ -24,9 +24,9 @@ export class TranslateTween extends Tween {
 
         if (this.differentialData.positions !== undefined) {
             this.graphic.setPosition({
-                x: this.graphic.currentPosition.x + (this.differentialData.positions.x * delta) | 0,
-                y: this.graphic.currentPosition.y + (this.differentialData.positions.y * delta) | 0,
-                z: this.graphic.currentPosition.z + (this.differentialData.positions.z * delta),
+                x: this.graphic.getCurrentPosition().x + (this.differentialData.positions.x * delta) | 0,
+                y: this.graphic.getCurrentPosition().y + (this.differentialData.positions.y * delta) | 0,
+                z: this.graphic.getCurrentPosition().z + (this.differentialData.positions.z * delta),
             });
         }
 
@@ -45,9 +45,9 @@ export class TranslateTween extends Tween {
 
         if (this.properties.positions !== undefined) {
             this.differentialData.positions = {
-                x: this.properties.positions.x - this.graphic.currentPosition.x,
-                y: this.properties.positions.y - this.graphic.currentPosition.y,
-                z: this.properties.positions.z - this.graphic.currentPosition.z,
+                x: this.properties.positions.x - this.graphic.getCurrentPosition().x,
+                y: this.properties.positions.y - this.graphic.getCurrentPosition().y,
+                z: this.properties.positions.z - this.graphic.getCurrentPosition().z,
             };
         }
 

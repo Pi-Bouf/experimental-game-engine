@@ -1,6 +1,6 @@
-import { IVector3D } from '@holo5/roombuilder';
+import { IPosition3D } from '../../../geometry/interfaces/IPosition3D';
 
 export interface ITweenVars {
     alpha?: number;
-    positions?: IVector3D;
+    positions?: IPosition3D;
 }

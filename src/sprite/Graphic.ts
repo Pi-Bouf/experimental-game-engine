@@ -3,21 +3,23 @@ import { BaseTexture, Point, Rectangle, Sprite, Texture } from 'pixi.js';
 import { EventCategory } from './enum/EventCategory';
 import { ICurrentEvents } from '../events/interface/ICurrentEvents';
 import { IGraphic } from './interface/IGraphic';
+import { IPosition3D } from '../geometry/interfaces/IPosition3D';
 import { ITween } from './tween/interface/ITween';
-import { IVector3D, Vector3d } from '@holo5/roombuilder';
+import { Position3D } from '../geometry/Position3D';
 import { Tween } from './tween/Tween';
 
 export class Graphic extends Sprite implements IGraphic {
     public name: string;
 
-    private _currentPosition: IVector3D;
+    private id: string;
+    private position3D: IPosition3D;
     private bounds: Rectangle;
     private initialized: boolean;
     private positionUpdated: boolean;
     private frameUpdated: boolean;
     private tween: ITween;
 
-    constructor(texture?: Texture) {
+    constructor(id: string, texture?: Texture) {
         // (PIXI) By default, set an empty texture
         super(texture ?? Texture.EMPTY);
         // (PIXI) By default, the renderer don't need to display this shit !
@@ -25,7 +27,8 @@ export class Graphic extends Sprite implements IGraphic {
 
         this.name = '';
 
-        this._currentPosition = new Vector3d();
+        this.id = id;
+        this.position3D = new Position3D();
         this.bounds = new Rectangle();
         this.initialized = false;
         this.positionUpdated = true;
@@ -36,19 +39,19 @@ export class Graphic extends Sprite implements IGraphic {
         return !this.initialized;
     }
 
-    setInitialized(): void {
+    public setInitialized(): void {
         this.initialized = true;
     }
 
-    requestInitialization(): void {
+    public requestInitialization(): void {
         this.initialized = false;
     }
 
     public initialize(resourceManager: AssetsManager): void {
         if (this.getTextureLink() === null) return;
 
-        if (resourceManager.has(this.name, this.getTextureLink())) {
-            this.texture = resourceManager.get(this.name).texture;
+        if (resourceManager.has(this.id)) {
+            this.texture = resourceManager.get(this.id);
             this.updateBounds();
             this.generateHitMap();
 
@@ -60,11 +63,11 @@ export class Graphic extends Sprite implements IGraphic {
         return !this.frameUpdated;
     }
 
-    setFrameUpdated(): void {
+    public setFrameUpdated(): void {
         this.frameUpdated = true;
     }
 
-    requestFrameUpdate(): void {
+    public requestFrameUpdate(): void {
         this.frameUpdated = false;
     }
 
@@ -73,11 +76,11 @@ export class Graphic extends Sprite implements IGraphic {
         this.setFrameUpdated();
     }
 
-    needTweenUpdate(): boolean {
+    public needTweenUpdate(): boolean {
         return this.tween !== undefined && !this.tween.complete;
     }
 
-    updateTween(now: number): void {
+    public updateTween(now: number): void {
         this.tween.update(now);
     }
 
@@ -85,11 +88,11 @@ export class Graphic extends Sprite implements IGraphic {
         this.tween = tween;
     }
 
-    setPositionUpdated(): void {
+    public setPositionUpdated(): void {
         this.positionUpdated = true;
     }
 
-    requestPositionUpdate(): void {
+    public requestPositionUpdate(): void {
         this.positionUpdated = false;
     }
 
@@ -97,24 +100,24 @@ export class Graphic extends Sprite implements IGraphic {
         return !this.positionUpdated;
     }
 
-    public setPosition(position: IVector3D): void {
-        this._currentPosition = position;
+    public setPosition(position: IPosition3D): void {
+        this.position3D = position;
         this.requestPositionUpdate();
     }
 
     public updatePosition(stageOffset: Point): void {
-        this.position.set(stageOffset.x + this._currentPosition.x + this.getXOffset(), stageOffset.y + this._currentPosition.y + this.getYOffset());
-        this.zIndex = this._currentPosition.z;
+        this.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
+        this.zIndex = this.position3D.z;
         this.setPositionUpdated();
         this.updateBounds();
     }
 
-    getBounds() {
-        return this.bounds;
+    getCurrentPosition(): IPosition3D {
+        return this.position3D;
     }
 
-    getCurrentPosition(): IVector3D {
-        return this._currentPosition;
+    public getBounds() {
+        return this.bounds;
     }
 
     protected getTextureLink(): string {
@@ -187,17 +190,5 @@ export class Graphic extends Sprite implements IGraphic {
     }
 
     public dispose(): void {
-    }
-
-    get currentPosition(): IVector3D {
-        return this._currentPosition;
-    }
-
-    getXOffset(): number {
-        return 0;
-    }
-
-    getYOffset(): number {
-        return 0;
     }
 }
