@@ -1,6 +1,6 @@
-import { AssetsManager } from '../assets/AssetsManager';
 import { BaseTexture, Point, Rectangle, Sprite, Texture } from 'pixi.js';
 import { EventCategory } from './enum/EventCategory';
+import { IAssetsManager } from '../assets/interface/IAssetsManager';
 import { ICurrentEvents } from '../events/interface/ICurrentEvents';
 import { IGraphic } from './interface/IGraphic';
 import { IPosition3D } from '../geometry/interfaces/IPosition3D';
@@ -11,7 +11,7 @@ import { Tween } from './tween/Tween';
 export class Graphic extends Sprite implements IGraphic {
     public name: string;
 
-    private id: string;
+    protected id: string;
     private position3D: IPosition3D;
     private bounds: Rectangle;
     private initialized: boolean;
@@ -47,9 +47,7 @@ export class Graphic extends Sprite implements IGraphic {
         this.initialized = false;
     }
 
-    public initialize(resourceManager: AssetsManager): void {
-        if (this.getTextureLink() === null) return;
-
+    public initialize(resourceManager: IAssetsManager): void {
         if (resourceManager.has(this.id)) {
             this.texture = resourceManager.get(this.id);
             this.updateBounds();
@@ -118,10 +116,6 @@ export class Graphic extends Sprite implements IGraphic {
 
     public getBounds() {
         return this.bounds;
-    }
-
-    protected getTextureLink(): string {
-        return null;
     }
 
     public updateBounds(): void {
