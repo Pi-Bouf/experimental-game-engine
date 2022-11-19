@@ -22,6 +22,7 @@ export class Engine {
             height: options.height,
             backgroundAlpha: options.backgroundAlpha,
         });
+
         this.canvasContainer = options.canvasContainer;
         this.canvasContainer.innerHTML = '';
         this.canvasContainer.append(this.renderer.view as HTMLCanvasElement);
