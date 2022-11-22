@@ -9,6 +9,7 @@
     "watch": "parcel example/index.html",
     "build": "parcel build example/index.html",
     "lint": "eslint --ext .js,.ts ./src --color",
+    "clean": "rm -rf .parcel-cache dist",
     "check": "tsc --noEmit",
     "assets": "http-server assets --cors -p 8081 -d "
   },

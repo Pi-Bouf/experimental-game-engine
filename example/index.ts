@@ -43,7 +43,7 @@ const action = [
 
 const avatar = ['avatar/archer_001.png', 'avatar/wizard_001.png', 'avatar/soldier_001.png'];
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 10; i++) {
     const randomDirection = direction[Math.random() * 4 | 0];
     const randomAction = action[Math.random() * 8 | 0];
     const randomAvatar = avatar[Math.random() * 3 | 0];

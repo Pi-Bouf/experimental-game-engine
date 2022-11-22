@@ -1,4 +1,5 @@
 import { Engine } from '../Engine';
+import { ICurrentEvents } from '../events/interface/ICurrentEvents';
 import { Point, Rectangle } from 'pixi.js';
 import { Stage } from './Stage';
 
@@ -21,11 +22,11 @@ export class GeometryManager {
         };
     }
 
-    public update() {
-        if (this.stage.eventManager.currentEvents.dragging) {
+    public update(currentEvents: ICurrentEvents) {
+        if (currentEvents.dragging) {
             this.needPositionUpdate = true;
-            this.stageOffset.x += this.stage.eventManager.currentEvents.cursorOffset.x | 0;
-            this.stageOffset.y += this.stage.eventManager.currentEvents.cursorOffset.y | 0;
+            this.stageOffset.x += currentEvents.cursorOffset.x | 0;
+            this.stageOffset.y += currentEvents.cursorOffset.y | 0;
         }
     }
 

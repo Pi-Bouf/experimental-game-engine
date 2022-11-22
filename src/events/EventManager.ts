@@ -30,36 +30,36 @@ export class EventManager {
         this.lastClickedTime = 0;
         this.lastUpdatedCursor = new Point();
 
-        this.updateInternalState();
         this.registerEvents();
-    }
-
-    public update() {
-        this.updateInternalState();
     }
 
     public reset() {
         this.clicking = false;
         this.doubleClicking = false;
-
-        this.updateInternalState();
     }
 
-    private updateInternalState() {
-        this.currentEvents = {
+    public getCurrentEvents(): ICurrentEvents {
+        const events = {
             clicking: this.clicking,
             doubleClicking: this.doubleClicking,
             dragging: this.pointerMove,
             currentCursor: this.currentCursor,
-            cursorOffset: !this.pointerMove ? new Point() : new Point(this.currentCursor.x - this.lastUpdatedCursor.x,
-                this.currentCursor.y - this.lastUpdatedCursor.y),
+            cursorOffset: !this.pointerMove
+                ? new Point()
+                : new Point(
+                    this.currentCursor.x - this.lastUpdatedCursor.x,
+                    this.currentCursor.y - this.lastUpdatedCursor.y,
+                ),
         };
+
         this.lastUpdatedCursor = this.currentCursor;
+
+        return events;
     }
 
     public registerEvents() {
         document.body.onpointermove = (event: MouseEvent) => {
-            this.currentCursor = new Point(event.clientX | 0, event.clientY | 0);
+            this.currentCursor = new Point(event.clientX, event.clientY | 0);
 
             const diffX = Math.abs(this.currentCursor.x - this.lastPointerDownCursor.x);
             const diffY = Math.abs(this.currentCursor.y - this.lastPointerDownCursor.y);

@@ -3,6 +3,7 @@ import { Engine } from '../Engine';
 import { EventCategory } from '../sprite/enum/EventCategory';
 import { EventManager } from '../events/EventManager';
 import { GeometryManager } from './GeometryManager';
+import { ICurrentEvents } from '../events/interface/ICurrentEvents';
 import { IGraphic } from '../sprite/interface/IGraphic';
 
 function sortChildren(a: DisplayObject, b: DisplayObject): number {
@@ -48,10 +49,11 @@ export class Stage extends Container {
     }
 
     public displayTick() {
-        this.eventManager.update();
-        this.rendererGeometry.update();
-
         const now = performance.now();
+
+        const currentEvents: ICurrentEvents = this.eventManager.getCurrentEvents();
+
+        this.rendererGeometry.update(currentEvents);
 
         if (this.rendererGeometry.needSizeUpdate) {
             this.engine.renderer.resize(this.rendererGeometry.stageBounds.width, this.rendererGeometry.stageBounds.height);
@@ -65,7 +67,7 @@ export class Stage extends Container {
             if (child.needTweenUpdate()) child.updateTween(now);
         });
 
-        // this.checkHovered(now);
+        // this.checkHovered(now, currentEvents);
 
         this.eventManager.reset();
         this.rendererGeometry.reset();
@@ -73,11 +75,10 @@ export class Stage extends Container {
         this.engine.renderer.render(this);
     }
 
-    private checkHovered(now: number) {
+    private checkHovered(now: number, currentEvents: ICurrentEvents) {
         if (now - this.lastHoverTick > this.minHoverTick) {
             let hovered = this.children.find((child) => {
-                return (child.getEventCategory() === EventCategory.FLOOR || child.getEventCategory() === EventCategory.AVATAR) && child.checkEvents(
-                    this.eventManager.currentEvents);
+                return (child.getEventCategory() === EventCategory.FLOOR || child.getEventCategory() === EventCategory.AVATAR) && child.checkEvents(currentEvents);
             });
 
             if (hovered) {
