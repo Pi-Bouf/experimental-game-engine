@@ -1,0 +1,4 @@
+.circleci/*
+assets/*
+examples/*
+src/*

@@ -1,24 +1,31 @@
 {
-  "name": "game-engine",
-  "version": "0.0.1",
+  "name": "@pi-bouf/game-engine",
+  "version": "0.0.2",
   "description": "Game engine attempt :)",
+  "private": false,
   "license": "UNLICENSED",
   "author": "Pi-Bouf",
   "source": "src/Engine.ts",
+  "main": "dist/Engine.js",
+  "typings": "dist/Engine.d.ts",
+  "types": "dist/Engine.d.ts",
+  "type": "module",
   "scripts": {
     "watch": "parcel example/index.html",
-    "build": "parcel build example/index.html",
+    "build": "tsc",
     "lint": "eslint --ext .js,.ts ./src --color",
+    "lint-fix": "eslint --ext .js,.ts ./src --color",
     "clean": "rm -rf .parcel-cache dist",
     "check": "tsc --noEmit",
-    "assets": "http-server assets --cors -p 8081 -d "
+    "assets": "http-server assets --cors -p 8081 -d",
+    "prepublish": "yarn clean; yarn lint-fix; yarn build"
   },
   "dependencies": {
     "pixi.js": "7.0.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -36,5 +43,16 @@
     "pixijs",
     "engine",
     "webgl"
-  ]
+  ],
+  "directories": {
+    "example": "example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pi-Bouf/experimental-game-engine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pi-Bouf/experimental-game-engine/issues"
+  },
+  "homepage": "https://github.com/Pi-Bouf/experimental-game-engine#readme"
 }
