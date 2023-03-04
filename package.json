@@ -1,6 +1,6 @@
 {
   "name": "@pi-bouf/game-engine",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Game engine attempt :)",
   "private": false,
   "license": "UNLICENSED",
@@ -20,22 +20,20 @@
     "prepublish": "yarn clean; yarn lint-fix; yarn build"
   },
   "dependencies": {
-    "pixi.js": "7.0.4"
+    "pixi.js": "7.1.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
-    "eslint": "^8.28.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "javascript-obfuscator": "^4.0.0",
-    "parcel": "2.8.0",
+    "parcel": "2.8.3",
     "punycode": "^1.4.1",
-    "querystring-es3": "^0.2.1",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.5"
   },
   "keywords": [
     "pixijs",
