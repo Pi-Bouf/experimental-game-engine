@@ -20,11 +20,13 @@
     "prepublish": "yarn clean; yarn lint-fix; yarn build"
   },
   "dependencies": {
-    "pixi.js": "7.1.4"
+    "pixi.js": "7.2.3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
+    "@types/css-font-loading-module": "^0.0.8",
+    "@types/node": "^18.15.10",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -33,7 +35,8 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "parcel": "2.8.3",
     "punycode": "^1.4.1",
-    "typescript": "^4.9.5"
+    "querystring-es3": "^0.2.1",
+    "typescript": "^5.0.2"
   },
   "keywords": [
     "pixijs",

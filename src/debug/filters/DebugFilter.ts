@@ -1,5 +1,5 @@
 import { Filter } from 'pixi.js';
-import { hex2rgb } from '@pixi/utils';
+// import { hex2rgb } from '@pixi/utils';
 
 const fragment = `
 varying vec2 vTextureCoord;
@@ -16,7 +16,7 @@ void main(void)
    }
 }
 `;
-
+// TODO fix the utils call, replace with @pixi/Colors
 export class DebugFilter extends Filter {
 
     constructor(color: number) {
@@ -24,6 +24,6 @@ export class DebugFilter extends Filter {
 
         const arrayColor = new Float32Array(3);
 
-        this.uniforms.color = hex2rgb(color, arrayColor);
+        // this.uniforms.color = hex2rgb(color, arrayColor);
     }
 }
