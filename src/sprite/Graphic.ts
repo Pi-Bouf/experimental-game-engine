@@ -1,7 +1,7 @@
 import { BaseTexture, Point, Rectangle, Sprite, Texture } from 'pixi.js';
 import { EventCategory } from './enum/EventCategory';
 import { IAssetsManager } from '../assets/interface/IAssetsManager';
-import { ICurrentEvents } from '../events/interface/ICurrentEvents';
+import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IGraphic } from './interface/IGraphic';
 import { IPosition3D } from '../geometry/interfaces/IPosition3D';
 import { ITween } from './tween/interface/ITween';
@@ -19,6 +19,9 @@ export class Graphic extends Sprite implements IGraphic {
     private frameUpdated: boolean;
     private tween: ITween;
 
+    private hoverable: boolean;
+    private clickable: boolean;
+
     constructor(id: string, texture: Texture = Texture.EMPTY) {
         // (PIXI) By default, set an empty texture
         super(texture ?? Texture.EMPTY);
@@ -33,6 +36,9 @@ export class Graphic extends Sprite implements IGraphic {
         this.initialized = texture !== Texture.EMPTY;
         this.positionUpdated = true;
         this.frameUpdated = true;
+
+        this.hoverable = true;
+        this.clickable = false;
     }
 
     public needInitialization() {
@@ -127,7 +133,8 @@ export class Graphic extends Sprite implements IGraphic {
             this.bounds.y + this.bounds.height));
     }
 
-    public checkEvents(currentEvents: ICurrentEvents): boolean {
+    public checkEvents(currentEvents: ICurrentInputs): boolean {
+        console.log('TEST ?');
         if (!this.bounds) return false;
 
         if (!this.bounds.contains(currentEvents.currentCursor.x, currentEvents.currentCursor.y)) return false;
@@ -141,6 +148,14 @@ export class Graphic extends Sprite implements IGraphic {
 
         // @ts-ignore
         return this.texture.baseTexture.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
+    }
+
+    public checkHoverable(currentEvents: ICurrentInputs): boolean {
+        if (!this.hoverable) return false;
+
+        if (!this.visible) return false;
+
+        return this.checkEvents(currentEvents);
     }
 
     protected generateHitMap(baseTexture?: BaseTexture): void {

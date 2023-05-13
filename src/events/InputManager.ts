@@ -1,11 +1,10 @@
-import { ICurrentEvents } from './interface/ICurrentEvents';
+import { ICurrentInputs } from './interface/ICurrentInputs';
 import { IResetable } from '../interfaces/IResetable';
 import { Point } from 'pixi.js';
 
 export class InputManager implements IResetable {
     public currentCursor: Point;
     public lastPointerDownCursor: Point;
-    public currentEvents: ICurrentEvents;
 
     private clicking: boolean;
     private doubleClicking: boolean;
@@ -43,8 +42,8 @@ export class InputManager implements IResetable {
         this.doubleClicking = false;
     }
 
-    public getCurrentEvents(): ICurrentEvents {
-        const events = {
+    public getCurrentInputs(): ICurrentInputs {
+        const inputs = {
             clicking: this.clicking,
             doubleClicking: this.doubleClicking,
             dragging: this.pointerMove,
@@ -59,7 +58,7 @@ export class InputManager implements IResetable {
 
         this.lastUpdatedCursor = this.currentCursor;
 
-        return events;
+        return inputs;
     }
 
     public registerEvents() {

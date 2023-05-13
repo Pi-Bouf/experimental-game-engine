@@ -1,2 +1,2 @@
-export * from './interface/ICurrentEvents';
+export * from './interface/ICurrentInputs';
 export * from './InputManager';

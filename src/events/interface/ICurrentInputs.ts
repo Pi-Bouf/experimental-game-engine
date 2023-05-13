@@ -1,6 +1,6 @@
 import { Point } from 'pixi.js';
 
-export interface ICurrentEvents {
+export interface ICurrentInputs {
     clicking: boolean,
     doubleClicking: boolean,
     dragging: boolean,

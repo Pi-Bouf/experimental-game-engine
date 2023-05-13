@@ -1,8 +1,7 @@
 import { Container, DisplayObject } from 'pixi.js';
 import { Engine } from '../Engine';
-import { EventCategory } from '../sprite/enum/EventCategory';
 import { GeometryManager } from './GeometryManager';
-import { ICurrentEvents } from '../events/interface/ICurrentEvents';
+import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IGraphic } from '../sprite/interface/IGraphic';
 import { IResetable } from '../interfaces/IResetable';
 import { InputManager } from '../events/InputManager';
@@ -27,7 +26,7 @@ export class Stage extends Container implements IResetable {
         this.interactiveChildren = false;
 
         this.lastHoverTick = 0;
-        this.minHoverTick = 1000 / 600000;
+        this.minHoverTick = 10;
 
         this.inputManager = new InputManager();
         this.rendererGeometry = new GeometryManager(this);
@@ -52,9 +51,9 @@ export class Stage extends Container implements IResetable {
     public displayTick() {
         const now = performance.now();
 
-        const currentEvents: ICurrentEvents = this.inputManager.getCurrentEvents();
+        const currentInputs: ICurrentInputs = this.inputManager.getCurrentInputs();
 
-        this.rendererGeometry.update(currentEvents);
+        this.rendererGeometry.update(currentInputs);
 
         if (this.rendererGeometry.needSizeUpdate) {
             this.engine.renderer.resize(this.rendererGeometry.stageBounds.width, this.rendererGeometry.stageBounds.height);
@@ -68,7 +67,7 @@ export class Stage extends Container implements IResetable {
             if (child.needTweenUpdate()) child.updateTween(now);
         });
 
-        // this.checkHovered(now, currentEvents);
+        this.checkHovered(now, currentInputs);
 
         this.inputManager.flush();
         this.rendererGeometry.flush();
@@ -76,10 +75,10 @@ export class Stage extends Container implements IResetable {
         this.engine.renderer.render(this);
     }
 
-    private checkHovered(now: number, currentEvents: ICurrentEvents) {
+    private checkHovered(now: number, currentInputs: ICurrentInputs) {
         if (now - this.lastHoverTick > this.minHoverTick) {
             let hovered = this.children.find((child) => {
-                return (child.getEventCategory() === EventCategory.FLOOR || child.getEventCategory() === EventCategory.AVATAR) && child.checkEvents(currentEvents);
+                return child.checkHoverable(currentInputs);
             });
 
             if (hovered) {

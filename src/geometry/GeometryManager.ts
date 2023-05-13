@@ -1,5 +1,5 @@
 import { Engine } from '../Engine';
-import { ICurrentEvents } from '../events/interface/ICurrentEvents';
+import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IResetable } from '../interfaces/IResetable';
 import { Point, Rectangle } from 'pixi.js';
 import { Stage } from './Stage';
@@ -32,7 +32,7 @@ export class GeometryManager implements IResetable {
         this.needPositionUpdate = true;
     }
 
-    public update(currentEvents: ICurrentEvents) {
+    public update(currentEvents: ICurrentInputs) {
         if (currentEvents.dragging) {
             this.needPositionUpdate = true;
             this.stageOffset.x += currentEvents.cursorOffset.x | 0;

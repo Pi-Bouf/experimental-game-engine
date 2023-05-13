@@ -1,6 +1,6 @@
 import { EventCategory } from '../enum/EventCategory';
 import { IAssetsManager } from '../../assets/interface/IAssetsManager';
-import { ICurrentEvents } from '../../events/interface/ICurrentEvents';
+import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
 import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
 import { Point, Rectangle, Sprite } from 'pixi.js';
 
@@ -29,7 +29,8 @@ export interface IGraphic extends Sprite {
     updateBounds(): void;
     checkBounds(bounds: Rectangle): void;
 
-    checkEvents(currentEvents: ICurrentEvents): boolean;
+    checkHoverable(currentEvents: ICurrentInputs): boolean;
+    checkEvents(currentEvents: ICurrentInputs): boolean;
     getEventCategory(): EventCategory;
 
     dispose(): void;
