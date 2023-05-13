@@ -30,7 +30,7 @@ export class Graphic extends Sprite implements IGraphic {
         this.id = id;
         this.position3D = new Position3D();
         this.bounds = new Rectangle();
-        this.initialized = false;
+        this.initialized = texture !== Texture.EMPTY;
         this.positionUpdated = true;
         this.frameUpdated = true;
     }
