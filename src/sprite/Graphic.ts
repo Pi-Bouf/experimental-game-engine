@@ -19,7 +19,7 @@ export class Graphic extends Sprite implements IGraphic {
     private frameUpdated: boolean;
     private tween: ITween;
 
-    constructor(id: string, texture?: Texture) {
+    constructor(id: string, texture: Texture = Texture.EMPTY) {
         // (PIXI) By default, set an empty texture
         super(texture ?? Texture.EMPTY);
         // (PIXI) By default, the renderer don't need to display this shit !

@@ -1,19 +1,20 @@
 import { Container, DisplayObject } from 'pixi.js';
 import { Engine } from '../Engine';
 import { EventCategory } from '../sprite/enum/EventCategory';
-import { EventManager } from '../events/EventManager';
 import { GeometryManager } from './GeometryManager';
 import { ICurrentEvents } from '../events/interface/ICurrentEvents';
 import { IGraphic } from '../sprite/interface/IGraphic';
+import { IResetable } from '../interfaces/IResetable';
+import { InputManager } from '../events/InputManager';
 
 function sortChildren(a: DisplayObject, b: DisplayObject): number {
     return b.zIndex - a.zIndex;
 }
 
-export class Stage extends Container {
+export class Stage extends Container implements IResetable {
     readonly children: IGraphic[];
 
-    public eventManager: EventManager;
+    public inputManager: InputManager;
     public rendererGeometry: GeometryManager;
 
     public lastHoverTick: number;
@@ -28,7 +29,7 @@ export class Stage extends Container {
         this.lastHoverTick = 0;
         this.minHoverTick = 1000 / 600000;
 
-        this.eventManager = new EventManager();
+        this.inputManager = new InputManager();
         this.rendererGeometry = new GeometryManager(this);
 
         this.rendererGeometry.checkStageSize();
@@ -51,7 +52,7 @@ export class Stage extends Container {
     public displayTick() {
         const now = performance.now();
 
-        const currentEvents: ICurrentEvents = this.eventManager.getCurrentEvents();
+        const currentEvents: ICurrentEvents = this.inputManager.getCurrentEvents();
 
         this.rendererGeometry.update(currentEvents);
 
@@ -69,8 +70,8 @@ export class Stage extends Container {
 
         // this.checkHovered(now, currentEvents);
 
-        this.eventManager.reset();
-        this.rendererGeometry.reset();
+        this.inputManager.flush();
+        this.rendererGeometry.flush();
 
         this.engine.renderer.render(this);
     }
@@ -82,15 +83,7 @@ export class Stage extends Container {
             });
 
             if (hovered) {
-                if (hovered.getEventCategory() === EventCategory.FLOOR) {
-                    console.log('FLOOR');
-                }
-
-                if (hovered.getEventCategory() === EventCategory.AVATAR) {
-                    document.body.style.cursor = 'pointer';
-                } else {
-                    document.body.style.cursor = 'default';
-                }
+                document.body.style.cursor = 'pointer';
             } else {
                 document.body.style.cursor = 'default';
             }
@@ -118,5 +111,10 @@ export class Stage extends Container {
         }
 
         this.sortDirty = false;
+    }
+
+    public reset() {
+        this.removeChildren();
+        this.inputManager.reset();
     }
 }

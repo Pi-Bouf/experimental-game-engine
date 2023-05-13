@@ -1,7 +1,8 @@
 import { ICurrentEvents } from './interface/ICurrentEvents';
+import { IResetable } from '../interfaces/IResetable';
 import { Point } from 'pixi.js';
 
-export class EventManager {
+export class InputManager implements IResetable {
     public currentCursor: Point;
     public lastPointerDownCursor: Point;
     public currentEvents: ICurrentEvents;
@@ -17,6 +18,12 @@ export class EventManager {
     private lastUpdatedCursor: Point;
 
     constructor() {
+        this.reset();
+
+        this.registerEvents();
+    }
+
+    public reset() {
         this.currentCursor = new Point(0, 0);
         this.lastPointerDownCursor = new Point(0, 0);
 
@@ -29,11 +36,9 @@ export class EventManager {
 
         this.lastClickedTime = 0;
         this.lastUpdatedCursor = new Point();
-
-        this.registerEvents();
     }
 
-    public reset() {
+    public flush() {
         this.clicking = false;
         this.doubleClicking = false;
     }

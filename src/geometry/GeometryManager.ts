@@ -1,9 +1,10 @@
 import { Engine } from '../Engine';
 import { ICurrentEvents } from '../events/interface/ICurrentEvents';
+import { IResetable } from '../interfaces/IResetable';
 import { Point, Rectangle } from 'pixi.js';
 import { Stage } from './Stage';
 
-export class GeometryManager {
+export class GeometryManager implements IResetable {
     public engine: Engine;
     public needSizeUpdate: boolean;
     public needPositionUpdate: boolean;
@@ -11,15 +12,24 @@ export class GeometryManager {
     public stageOffset: Point;
 
     public constructor(public stage: Stage) {
+        this.reset();
+
+        window.onresize = () => {
+            this.checkStageSize();
+        };
+    }
+
+    public reset() {
         this.needSizeUpdate = false;
         this.needPositionUpdate = true;
 
         this.stageBounds = new Rectangle();
         this.stageOffset = new Point();
+    }
 
-        window.onresize = () => {
-            this.checkStageSize();
-        };
+    public flush() {
+        this.needSizeUpdate = false;
+        this.needPositionUpdate = true;
     }
 
     public update(currentEvents: ICurrentEvents) {
@@ -28,11 +38,6 @@ export class GeometryManager {
             this.stageOffset.x += currentEvents.cursorOffset.x | 0;
             this.stageOffset.y += currentEvents.cursorOffset.y | 0;
         }
-    }
-
-    public reset() {
-        this.needPositionUpdate = false;
-        this.needSizeUpdate = false;
     }
 
     public checkStageSize() {
