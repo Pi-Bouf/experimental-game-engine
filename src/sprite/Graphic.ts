@@ -37,7 +37,7 @@ export class Graphic extends Sprite implements IGraphic {
         this.positionUpdated = true;
         this.frameUpdated = true;
 
-        this.hoverable = true;
+        this.hoverable = false;
         this.clickable = false;
     }
 
@@ -57,7 +57,7 @@ export class Graphic extends Sprite implements IGraphic {
         if (resourceManager.has(this.id)) {
             this.texture = resourceManager.get(this.id);
             this.updateBounds();
-            this.generateHitMap();
+            // this.generateHitMap();
 
             this.setInitialized();
         }
@@ -134,7 +134,6 @@ export class Graphic extends Sprite implements IGraphic {
     }
 
     public checkEvents(currentEvents: ICurrentInputs): boolean {
-        console.log('TEST ?');
         if (!this.bounds) return false;
 
         if (!this.bounds.contains(currentEvents.currentCursor.x, currentEvents.currentCursor.y)) return false;
