@@ -36,7 +36,6 @@ export class Avatar extends Graphic {
             this.texture = this.currentTextures[0];
 
             this.updateBounds();
-            this.generateHitMap();
 
             this.setInitialized();
         }
