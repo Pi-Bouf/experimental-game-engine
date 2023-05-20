@@ -29,8 +29,8 @@ export interface IGraphic extends Sprite {
     updateBounds(): void;
     checkBounds(bounds: Rectangle): void;
 
-    checkHoverable(currentEvents: ICurrentInputs): boolean;
-    checkEvents(currentEvents: ICurrentInputs): boolean;
+    checkHover(currentInputs: ICurrentInputs): boolean;
+    checkInput(currentInputs: ICurrentInputs): boolean;
     getEventCategory(): EventCategory;
 
     dispose(): void;

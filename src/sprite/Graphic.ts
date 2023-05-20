@@ -19,7 +19,7 @@ export class Graphic extends Sprite implements IGraphic {
     private frameUpdated: boolean;
     private tween: ITween;
 
-    private hoverable: boolean;
+    private canBeHovered: boolean;
     private clickable: boolean;
 
     constructor(id: string, texture: Texture = Texture.EMPTY) {
@@ -37,7 +37,7 @@ export class Graphic extends Sprite implements IGraphic {
         this.positionUpdated = true;
         this.frameUpdated = true;
 
-        this.hoverable = false;
+        this.canBeHovered = false;
         this.clickable = false;
     }
 
@@ -133,28 +133,28 @@ export class Graphic extends Sprite implements IGraphic {
             this.bounds.y + this.bounds.height));
     }
 
-    public checkEvents(currentEvents: ICurrentInputs): boolean {
+    public checkInput(currentInputs: ICurrentInputs): boolean {
         if (!this.bounds) return false;
 
-        if (!this.bounds.contains(currentEvents.currentCursor.x, currentEvents.currentCursor.y)) return false;
+        if (!this.bounds.contains(currentInputs.currentCursor.x, currentInputs.currentCursor.y)) return false;
 
         if (this.bounds.width < 2 || this.bounds.height < 2) return false;
 
         // @ts-ignore
         if (!this.texture.baseTexture.hitMap) this.generateHitMap();
 
-        let point = new Point(currentEvents.currentCursor.x - this.bounds.x, currentEvents.currentCursor.y - this.bounds.y);
+        let point = new Point(currentInputs.currentCursor.x - this.bounds.x, currentInputs.currentCursor.y - this.bounds.y);
 
         // @ts-ignore
         return this.texture.baseTexture.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
     }
 
-    public checkHoverable(currentEvents: ICurrentInputs): boolean {
-        if (!this.hoverable) return false;
+    public checkHover(currentInputs: ICurrentInputs): boolean {
+        if (!this.canBeHovered) return false;
 
         if (!this.visible) return false;
 
-        return this.checkEvents(currentEvents);
+        return this.checkInput(currentInputs);
     }
 
     protected generateHitMap(baseTexture?: BaseTexture): void {
