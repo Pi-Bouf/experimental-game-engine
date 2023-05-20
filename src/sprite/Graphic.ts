@@ -37,7 +37,7 @@ export class Graphic extends Sprite implements IGraphic {
         this.positionUpdated = true;
         this.frameUpdated = true;
 
-        this.canBeHovered = false;
+        this.canBeHovered = true;
         this.clickable = false;
     }
 
@@ -143,8 +143,7 @@ export class Graphic extends Sprite implements IGraphic {
         // @ts-ignore
         if (!this.texture.baseTexture.hitMap) this.generateHitMap();
 
-        let point = new Point(currentInputs.currentCursor.x - this.bounds.x, currentInputs.currentCursor.y - this.bounds.y);
-
+        let point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.bounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.bounds.y) | 0);
         // @ts-ignore
         return this.texture.baseTexture.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
     }
