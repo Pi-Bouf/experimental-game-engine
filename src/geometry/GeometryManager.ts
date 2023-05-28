@@ -29,7 +29,7 @@ export class GeometryManager implements IResetable {
 
     public flush() {
         this.needSizeUpdate = false;
-        this.needPositionUpdate = true;
+        this.needPositionUpdate = false;
     }
 
     public update(currentEvents: ICurrentInputs) {
