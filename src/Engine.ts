@@ -1,7 +1,7 @@
 import { AssetsManager } from './assets/AssetsManager';
+import { BaseTexture, Renderer, SCALE_MODES, Ticker, settings } from 'pixi.js';
 import { DoubleTicker } from './ticker/DoubleTicker';
 import { IEngineOption } from './interfaces/IEngineOption';
-import { Renderer, settings } from 'pixi.js';
 import { Stage } from './geometry/Stage';
 
 export class Engine {
@@ -15,7 +15,11 @@ export class Engine {
         private options: IEngineOption,
     ) {
         settings.RESOLUTION = 1;
-        // settings.SCALE_MODE = SCALE_MODES.NEAREST;
+        BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
+        Ticker.shared.stop();
+        Ticker.shared.autoStart = false;
+
+        Ticker.shared.maxFPS = 1;
 
         this.renderer = new Renderer({
             width: options.width,
