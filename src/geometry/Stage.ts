@@ -14,7 +14,7 @@ export class Stage extends Container implements IResetable {
     readonly children: IGraphic[];
 
     private inputManager: InputManager;
-    private rendererGeometry: GeometryManager;
+    private geometryManager: GeometryManager;
 
     private lastHoverTick: number;
     private minHoverTick: number;
@@ -29,9 +29,9 @@ export class Stage extends Container implements IResetable {
         this.minHoverTick = 10;
 
         this.inputManager = new InputManager();
-        this.rendererGeometry = new GeometryManager(this);
+        this.geometryManager = new GeometryManager(this);
 
-        this.rendererGeometry.checkStageSize();
+        this.geometryManager.checkStageSize();
     }
 
     public animationTick() {
@@ -39,7 +39,7 @@ export class Stage extends Container implements IResetable {
             if (child.needInitialization()) {
                 child.initialize(this.engine.assetsManager);
             } else {
-                child.checkBounds(this.rendererGeometry.stageBounds);
+                child.checkBounds(this.geometryManager.stageBounds);
 
                 if (child.visible) {
                     if (child.needFrameUpdate()) child.updateFrame();
@@ -53,15 +53,15 @@ export class Stage extends Container implements IResetable {
 
         const currentInputs: ICurrentInputs = this.inputManager.getCurrentInputs();
 
-        this.rendererGeometry.update(currentInputs);
+        this.geometryManager.update(currentInputs);
 
-        if (this.rendererGeometry.needSizeUpdate) {
-            this.engine.renderer.resize(this.rendererGeometry.stageBounds.width, this.rendererGeometry.stageBounds.height);
+        if (this.geometryManager.needSizeUpdate) {
+            this.engine.renderer.resize(this.geometryManager.stageBounds.width, this.geometryManager.stageBounds.height);
         }
 
         this.children.forEach(child => {
-            if (child.needPositionUpdate() || this.rendererGeometry.needPositionUpdate) {
-                child.updatePosition(this.rendererGeometry.stageOffset);
+            if (child.needPositionUpdate() || this.geometryManager.needPositionUpdate) {
+                child.updatePosition(this.geometryManager.stageOffset);
             }
 
             if (child.needTweenUpdate()) child.updateTween(now);
@@ -70,7 +70,7 @@ export class Stage extends Container implements IResetable {
         this.checkHovered(now, currentInputs);
 
         this.inputManager.flush();
-        this.rendererGeometry.flush();
+        this.geometryManager.flush();
 
         this.engine.renderer.render(this);
     }
