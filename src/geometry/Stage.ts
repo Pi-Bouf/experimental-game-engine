@@ -13,11 +13,11 @@ function sortChildren(a: DisplayObject, b: DisplayObject): number {
 export class Stage extends Container implements IResetable {
     readonly children: IGraphic[];
 
-    public inputManager: InputManager;
-    public rendererGeometry: GeometryManager;
+    private inputManager: InputManager;
+    private rendererGeometry: GeometryManager;
 
-    public lastHoverTick: number;
-    public minHoverTick: number;
+    private lastHoverTick: number;
+    private minHoverTick: number;
 
     constructor(public engine: Engine) {
         super();
