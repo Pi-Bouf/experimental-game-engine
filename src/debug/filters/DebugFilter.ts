@@ -9,10 +9,10 @@ uniform vec3 color;
 void main(void)
 {
    vec4 c = texture2D(uSampler, vTextureCoord);
-   gl_FragColor = vec4(c.xyz, 1);
+   gl_FragColor = c;
    
-   if(c.a == 0.0) {
-     gl_FragColor = vec4(color, 1);
+   if(c == vec4(0.0, 0.0, 0.0, 1.0)) {
+     gl_FragColor = vec4(1.0, 0.8, 0.8, 1);
    }
 }
 `;
