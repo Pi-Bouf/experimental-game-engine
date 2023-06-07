@@ -37,7 +37,7 @@ export class Engine {
 
         this.assetsManager = new AssetsManager(this.options.images.imageDomain);
 
-        // new PixiInspector(this.stage);
+        //new PixiInspector(this.stage);
     }
 
     public async init() {

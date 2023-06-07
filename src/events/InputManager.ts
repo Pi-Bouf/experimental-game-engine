@@ -1,8 +1,9 @@
 import { ICurrentInputs } from './interface/ICurrentInputs';
+import { IFlushable } from '../interfaces/IFlushable';
 import { IResetable } from '../interfaces/IResetable';
 import { Point } from 'pixi.js';
 
-export class InputManager implements IResetable {
+export class InputManager implements IResetable, IFlushable {
     public currentCursor: Point;
     public lastPointerDownCursor: Point;
 
@@ -22,7 +23,7 @@ export class InputManager implements IResetable {
         this.registerEvents();
     }
 
-    public reset() {
+    public reset(): void {
         this.currentCursor = new Point(0, 0);
         this.lastPointerDownCursor = new Point(0, 0);
 
@@ -37,7 +38,7 @@ export class InputManager implements IResetable {
         this.lastUpdatedCursor = new Point();
     }
 
-    public flush() {
+    public flush(): void {
         this.clicking = false;
         this.doubleClicking = false;
     }
