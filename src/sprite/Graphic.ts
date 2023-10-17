@@ -164,7 +164,7 @@ export class Graphic extends Sprite implements IGraphic {
 
         let canvas, context;
         //@ts-ignore
-        if (baseTex.resource.source instanceof Image) {
+        if (baseTex.resource.source instanceof ImageBitmap) {
             canvas = document.createElement('canvas');
             context = canvas.getContext('2d');
 

@@ -1,8 +1,9 @@
+import { Assets, Spritesheet, Texture } from 'pixi.js';
+import { IAsset } from './interface/IAsset';
 import { IAssetsManager } from './interface/IAssetsManager';
-import { Texture } from 'pixi.js';
 
 export class AssetsManager implements IAssetsManager {
-    private _textures: Map<string, Texture>;
+    private _textures: Map<string, IAsset<Texture | Spritesheet> | null>;
     private _count: number;
 
     constructor(
@@ -19,19 +20,28 @@ export class AssetsManager implements IAssetsManager {
     has(id: string): boolean {
         const texture = this._textures.get(id);
 
-        if (texture === undefined) {
-            this._textures.set(id, Texture.from(this.imageDomain + id));
+        if (texture === null) {
             return false;
         }
 
-        if (texture.valid) {
-            return true;
+        if (texture === undefined) {
+            this.load(id);
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     get(id: string): Texture {
-        return this._textures.get(id);
+        //@ts-ignore
+        return this._textures.get(id) as Texture;
+    }
+
+    private load(id: string) {
+        this._textures.set(id, null);
+
+        Assets.load(this.imageDomain + id).then((asset) => {
+            this._textures.set(id, asset);
+        });
     }
 }
