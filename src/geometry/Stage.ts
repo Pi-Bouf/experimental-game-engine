@@ -1,5 +1,6 @@
 import { Container, DisplayObject } from 'pixi.js';
 import { Engine } from '../Engine';
+import { EventCategory } from '../sprite';
 import { GeometryManager } from './GeometryManager';
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IGraphic } from '../sprite/interface/IGraphic';
@@ -78,7 +79,7 @@ export class Stage extends Container implements IResetable {
     private checkHovered(now: number, currentInputs: ICurrentInputs) {
         if (now - this.lastHoverTick > this.minHoverTick) {
             let hovered = this.children.find((child) => {
-                return child.checkHover(currentInputs);
+                return child.getEventCategory() !== EventCategory.NONE && child.checkHover(currentInputs);
             });
 
             if (hovered) {
