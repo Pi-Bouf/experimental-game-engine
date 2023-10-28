@@ -32,9 +32,8 @@ export class AssetsManager implements IAssetsManager {
         return true;
     }
 
-    get(id: string): Texture {
-        //@ts-ignore
-        return this._textures.get(id) as Texture;
+    get<T>(id: string): IAsset<T> {
+        return this._textures.get(id);
     }
 
     private load(id: string) {
