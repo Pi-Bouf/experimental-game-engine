@@ -1,11 +1,11 @@
 import { AssetsManager } from './assets/AssetsManager';
-import { BaseTexture, Renderer, SCALE_MODES, Ticker, settings } from 'pixi.js';
+import { BaseTexture, DisplayObject, RenderTexture, Renderer, SCALE_MODES, Ticker, settings } from 'pixi.js';
 import { DoubleTicker } from './ticker/DoubleTicker';
 import { IEngineOption } from './interfaces/IEngineOption';
 import { Stage } from './geometry/Stage';
 
 export class Engine {
-    public canvasContainer: HTMLElement;
+    public canvasContainer: HTMLDivElement;
     public renderer: Renderer;
     public assetsManager: AssetsManager;
     public stage: Stage;
@@ -42,6 +42,10 @@ export class Engine {
 
     public async init() {
         await this.assetsManager.init();
+    }
+
+    public generateTexture(object: DisplayObject): RenderTexture {
+        return this.renderer.generateTexture(object);
     }
 
     public reset() {

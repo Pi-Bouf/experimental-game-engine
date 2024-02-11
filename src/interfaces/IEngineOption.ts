@@ -1,5 +1,5 @@
 export interface IEngineOption {
-    canvasContainer: HTMLElement,
+    canvasContainer: HTMLDivElement,
     width: number,
     height: number,
     autoResize: boolean,
