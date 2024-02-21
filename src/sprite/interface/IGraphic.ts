@@ -1,5 +1,5 @@
 import { EventCategory } from '../enum/EventCategory';
-import { IAssetsManager } from '../../assets/interface/IAssetsManager';
+import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
 import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
 import { Point, Rectangle, Sprite } from 'pixi.js';

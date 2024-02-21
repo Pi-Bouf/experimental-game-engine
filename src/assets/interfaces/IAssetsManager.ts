@@ -1,4 +1,4 @@
-import { Asset } from './IAsset';
+import { Asset } from '../types/Asset';
 
 export interface IAssetsManager {
     has(id: string): boolean;

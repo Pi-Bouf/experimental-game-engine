@@ -1,11 +1,12 @@
-import { AssetTexture } from '../assets/interface/IAsset';
-import { BaseTexture, Point, Rectangle, Sprite, Texture } from 'pixi.js';
+import { AssetTexture } from '../assets';
+import { BaseTexture, Point, Sprite, Texture } from 'pixi.js';
 import { EventCategory } from './enum/EventCategory';
-import { IAssetsManager } from '../assets/interface/IAssetsManager';
+import { IAssetsManager } from '../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IGraphic } from './interface/IGraphic';
 import { IPosition3D } from '../geometry/interfaces/IPosition3D';
 import { ITween } from './tween/interface/ITween';
+import { PRectangle } from '../geometry';
 import { Position3D } from '../geometry/Position3D';
 import { Tween } from './tween/Tween';
 
@@ -14,7 +15,7 @@ export class Graphic extends Sprite implements IGraphic {
 
     protected id: string;
     private position3D: IPosition3D;
-    private bounds: Rectangle;
+    private bounds: PRectangle;
     private initialized: boolean;
     private positionUpdated: boolean;
     private frameUpdated: boolean;
@@ -33,7 +34,7 @@ export class Graphic extends Sprite implements IGraphic {
 
         this.id = id;
         this.position3D = new Position3D();
-        this.bounds = new Rectangle();
+        this.bounds = new PRectangle();
         this.initialized = texture !== Texture.EMPTY;
         this.positionUpdated = true;
         this.frameUpdated = true;
@@ -126,10 +127,10 @@ export class Graphic extends Sprite implements IGraphic {
     }
 
     public updateBounds(): void {
-        this.bounds = new Rectangle(this.position.x, this.position.y, this.texture.width, this.texture.height);
+        this.bounds = new PRectangle(this.position.x, this.position.y, this.texture.width, this.texture.height);
     }
 
-    public checkBounds(bounds: Rectangle): void {
+    public checkBounds(bounds: PRectangle): void {
         this.visible = !!(bounds.contains(this.bounds.x, this.bounds.y) || bounds.contains(this.bounds.x + this.bounds.width,
             this.bounds.y + this.bounds.height));
     }

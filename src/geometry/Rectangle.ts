@@ -1,6 +1,6 @@
-import { Rectangle as PRectangle } from 'pixi.js';
+import { Rectangle } from 'pixi.js';
 
-export class Rectangle extends PRectangle {
+export class PRectangle extends Rectangle {
     isEqual(rectangle: PRectangle) {
         return this.x === rectangle.x &&
             this.y === rectangle.y &&

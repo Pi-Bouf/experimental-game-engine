@@ -1,6 +1,6 @@
-import { Asset } from './interface/IAsset';
+import { Asset } from './types/Asset';
 import { Assets } from 'pixi.js';
-import { IAssetsManager } from './interface/IAssetsManager';
+import { IAssetsManager } from './interfaces/IAssetsManager';
 
 export class AssetsManager implements IAssetsManager {
     private _textures: Map<string, Asset | null>;
@@ -15,8 +15,8 @@ export class AssetsManager implements IAssetsManager {
 
     public async init(baseFiles: string[] = []): Promise<void> {
         for (const id of baseFiles) {
-            const terrainTexture = await Assets.load(this.imageDomain + 'map/terrain_001.json');
-            this._textures.set('map/terrain_001.json', terrainTexture);
+            const terrainTexture = await Assets.load(this.imageDomain + id);
+            this._textures.set(id, terrainTexture);
         }
     }
 

@@ -3,7 +3,7 @@ import { AvatarPositionComputer } from './AvatarPositionComputer';
 import { Direction } from './enum/Direction';
 import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
-import { IAssetsManager } from '../src/assets/interface/IAssetsManager';
+import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
 import { Point, Texture } from 'pixi.js';
 
 export class Avatar extends Graphic {
