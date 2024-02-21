@@ -9,5 +9,6 @@ export interface IEngineOption {
     mouseEventFrequency: number,
     images: {
         imageDomain: string,
+        baseFiles?: string[]
     }
 }

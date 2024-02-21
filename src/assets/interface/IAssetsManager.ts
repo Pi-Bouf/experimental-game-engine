@@ -1,7 +1,7 @@
-import { Spritesheet, Texture } from 'pixi.js';
+import { Asset } from './IAsset';
 
 export interface IAssetsManager {
     has(id: string): boolean;
 
-    get(id: string): Texture | Spritesheet;
+    get<T extends Asset>(id: string): T;
 }

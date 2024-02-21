@@ -18,7 +18,6 @@ export class Engine {
         BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
         Ticker.shared.stop();
         Ticker.shared.autoStart = false;
-
         Ticker.shared.maxFPS = 1;
 
         this.renderer = new Renderer({
@@ -41,7 +40,7 @@ export class Engine {
     }
 
     public async init() {
-        await this.assetsManager.init();
+        await this.assetsManager.init(this.options.images.baseFiles);
     }
 
     public generateTexture(object: DisplayObject): RenderTexture {
