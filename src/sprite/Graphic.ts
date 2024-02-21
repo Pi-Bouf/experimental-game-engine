@@ -131,8 +131,7 @@ export class Graphic extends Sprite implements IGraphic {
     }
 
     public checkBounds(bounds: PRectangle): void {
-        this.visible = !!(bounds.contains(this.bounds.x, this.bounds.y) || bounds.contains(this.bounds.x + this.bounds.width,
-            this.bounds.y + this.bounds.height));
+        this.visible = bounds.intersects(this.bounds);
     }
 
     public checkInput(currentInputs: ICurrentInputs): boolean {
