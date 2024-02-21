@@ -1,3 +1,4 @@
+import { AssetTexture } from '../assets/interface/IAsset';
 import { BaseTexture, Point, Rectangle, Sprite, Texture } from 'pixi.js';
 import { EventCategory } from './enum/EventCategory';
 import { IAssetsManager } from '../assets/interface/IAssetsManager';
@@ -55,7 +56,7 @@ export class Graphic extends Sprite implements IGraphic {
 
     public initialize(resourceManager: IAssetsManager): void {
         if (resourceManager.has(this.id)) {
-            this.texture = resourceManager.get(this.id);
+            this.texture = resourceManager.get<AssetTexture>(this.id);
             this.updateBounds();
             // this.generateHitMap();
 
