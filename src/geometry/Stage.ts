@@ -78,7 +78,7 @@ export class Stage extends Container implements IResetable {
 
     private checkHovered(now: number, currentInputs: ICurrentInputs) {
         if (now - this.lastHoverTick > this.minHoverTick) {
-            let hovered = this.children.find((child) => {
+            const hovered = this.children.find((child) => {
                 if (!child.visible) return false;
                 return child.getEventCategory() !== EventCategory.NONE && child.checkHover(currentInputs);
             });

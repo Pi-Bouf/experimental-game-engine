@@ -20,7 +20,7 @@ export class TranslateTween extends Tween {
     public execute(percent: number): void {
         if (this.differentialData === undefined) this.computeDifferentialData();
 
-        let delta = (percent - this.lastPercent);
+        const delta = (percent - this.lastPercent);
 
         if (this.differentialData.positions !== undefined) {
             this.graphic.setPosition({

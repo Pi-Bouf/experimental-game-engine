@@ -53,6 +53,6 @@ for (let i = 0; i < 1000; i++) {
     sandbox.stage.addChild(player);
 }
 
-    // const player = new Avatar('avatar/wizard_001.png',Action.ATTACK, Direction.E);
-    // player.setPosition(new Position3D(100, 100));
-    // sandbox.stage.addChild(player);
+// const player = new Avatar('avatar/wizard_001.png',Action.ATTACK, Direction.E);
+// player.setPosition(new Position3D(100, 100));
+// sandbox.stage.addChild(player);

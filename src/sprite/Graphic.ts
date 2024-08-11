@@ -144,7 +144,7 @@ export class Graphic extends Sprite implements IGraphic {
         // @ts-ignore
         if (!this.texture.baseTexture.hitMap) this.generateHitMap();
 
-        let point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.bounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.bounds.y) | 0);
+        const point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.bounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.bounds.y) | 0);
         // @ts-ignore
         return this.texture.baseTexture.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
     }
@@ -158,7 +158,7 @@ export class Graphic extends Sprite implements IGraphic {
     }
 
     protected generateHitMap(baseTexture?: BaseTexture): void {
-        let baseTex = baseTexture || this.texture.baseTexture;
+        const baseTex = baseTexture || this.texture.baseTexture;
         // @ts-ignore
         if (baseTex.hitMap !== undefined) return;
         if (!baseTex.resource) return;
