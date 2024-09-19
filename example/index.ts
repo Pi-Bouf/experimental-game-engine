@@ -1,9 +1,9 @@
-import {Action} from './enum/Action';
-import {Avatar} from './Avatar';
-import {AvatarPositionComputer} from './AvatarPositionComputer';
-import {Direction} from './enum/Direction';
-import {Engine} from '../src/Engine';
-import {Position3D} from '../src/geometry/Position3D';
+import { Action } from './enum/Action';
+import { Avatar } from './Avatar';
+import { AvatarPositionComputer } from './AvatarPositionComputer';
+import { Direction } from './enum/Direction';
+import { Engine } from '../src/Engine';
+import { Position3D } from '../src/geometry/Position3D';
 
 const sandbox = new Engine({
     width: 1000,
@@ -49,7 +49,7 @@ for (let i = 0; i < 1000; i++) {
     const randomAvatar = avatar[Math.random() * 3 | 0];
 
     const player = new Avatar(randomAvatar, randomAction, randomDirection);
-    player.setPosition(new Position3D(Math.random() * 1000 | 0, Math.random() * 700 | 0));
+    player.setPosition3D(new Position3D(Math.random() * 1000 | 0, Math.random() * 700 | 0));
     sandbox.stage.addChild(player);
 }
 

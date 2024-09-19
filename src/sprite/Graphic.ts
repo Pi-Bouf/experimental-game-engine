@@ -106,8 +106,8 @@ export class Graphic extends Sprite implements IGraphic {
         return !this.positionUpdated;
     }
 
-    public setPosition(position: IPosition3D): void {
-        this.position3D = position;
+    public setPosition3D(position3D: IPosition3D): void {
+        this.position3D = position3D;
         this.requestPositionUpdate();
     }
 

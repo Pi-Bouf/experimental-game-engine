@@ -20,7 +20,18 @@ export class Position3D implements IPosition3D {
         return this._z;
     }
 
-    static from(position3D: IPosition3D) {
+    public static from(position3D: IPosition3D) {
         return new Position3D(position3D.x, position3D.y, position3D.z);
+    }
+
+    public static getDirection(currentPosition: IPosition3D, newPosition: IPosition3D): string {
+        const deltaX = currentPosition.x - newPosition.x;
+        const deltaY = currentPosition.y - newPosition.y;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            return deltaX < 0 ? "e" : "w";
+        } else {
+            return deltaY < 0 ? "n" : "s";
+        }
     }
 }

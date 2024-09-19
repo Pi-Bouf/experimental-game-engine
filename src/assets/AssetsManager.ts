@@ -3,14 +3,12 @@ import { Assets } from 'pixi.js';
 import { IAssetsManager } from './interfaces/IAssetsManager';
 
 export class AssetsManager implements IAssetsManager {
-    private _textures: Map<string, Asset | null>;
-    private _count: number;
+    protected _textures: Map<string, Asset | null>;
 
     constructor(
-        private readonly imageDomain: string,
+        protected readonly imageDomain: string,
     ) {
         this._textures = new Map();
-        this._count = 0;
     }
 
     public async init(baseFiles: string[] = []): Promise<void> {
@@ -20,7 +18,7 @@ export class AssetsManager implements IAssetsManager {
         }
     }
 
-    has(id: string): boolean {
+    public has(id: string): boolean {
         const texture = this._textures.get(id);
 
         if (texture === null) {
@@ -35,11 +33,11 @@ export class AssetsManager implements IAssetsManager {
         return true;
     }
 
-    get<T extends Asset>(id: string): T {
+    public get<T extends Asset>(id: string): T {
         return this._textures.get(id) as T;
     }
 
-    private load(id: string) {
+    protected load(id: string) {
         this._textures.set(id, null);
 
         Assets.load(this.imageDomain + id).then((asset) => {

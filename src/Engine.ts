@@ -1,13 +1,14 @@
 import { AssetsManager } from './assets/AssetsManager';
 import { BaseTexture, DisplayObject, RenderTexture, Renderer, SCALE_MODES, Ticker, settings } from 'pixi.js';
 import { DoubleTicker } from './ticker/DoubleTicker';
+import {IAssetsManager} from "./assets";
 import { IEngineOption } from './interfaces/IEngineOption';
 import { Stage } from './geometry/Stage';
 
 export class Engine {
     public canvasContainer: HTMLDivElement;
     public renderer: Renderer;
-    public assetsManager: AssetsManager;
+    public assetsManager: IAssetsManager;
     public stage: Stage;
     public ticker: DoubleTicker;
 
@@ -34,7 +35,7 @@ export class Engine {
         this.ticker = new DoubleTicker(options.maxAnimationRate, options.maxDisplayRate);
         this.ticker.attachCallbacks(() => this.stage.animationTick(), () => this.stage.displayTick());
 
-        this.assetsManager = new AssetsManager(this.options.images.imageDomain);
+        this.assetsManager = options.assetsManager ?? new AssetsManager(this.options.images.imageDomain);
 
         //new PixiInspector(this.stage);
     }

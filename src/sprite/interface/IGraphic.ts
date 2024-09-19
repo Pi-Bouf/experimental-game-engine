@@ -22,7 +22,7 @@ export interface IGraphic extends Sprite {
     updatePosition(point: Point): void;
     setPositionUpdated(): void;
     requestPositionUpdate(): void;
-    setPosition(position3D: IPosition3D): void;
+    setPosition3D(position3D: IPosition3D): void;
     getCurrentPosition(): IPosition3D;
 
     getBounds(): Rectangle;
