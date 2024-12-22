@@ -2,7 +2,6 @@
   "name": "@pi-bouf/game-engine",
   "version": "0.0.5",
   "description": "Game engine attempt :)",
-  "private": false,
   "license": "UNLICENSED",
   "author": "Pi-Bouf",
   "source": "src/index.ts",
