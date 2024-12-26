@@ -11,6 +11,7 @@ export class Engine {
     public assetsManager: IAssetsManager;
     public stage: Stage;
     public ticker: DoubleTicker;
+    public externalLoopCallback: () => void;
 
     constructor(
         private options: IEngineOption,
@@ -33,7 +34,11 @@ export class Engine {
 
         this.stage = new Stage(this);
         this.ticker = new DoubleTicker(options.maxAnimationRate, options.maxDisplayRate);
-        this.ticker.attachCallbacks(() => this.stage.animationTick(), () => this.stage.displayTick());
+        this.ticker.attachCallbacks(() => this.stage.animationTick(), () => {
+            if(this.externalLoopCallback) { this.externalLoopCallback(); }
+
+            this.stage.displayTick();
+        });
 
         this.assetsManager = options.assetsManager ?? new AssetsManager(this.options.images.imageDomain);
 
