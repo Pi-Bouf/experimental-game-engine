@@ -1,8 +1,8 @@
-import globals from "globals";
-import importES6Autofix from "eslint-plugin-sort-imports-es6-autofix";
 import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
+import importES6Autofix from "eslint-plugin-sort-imports-es6-autofix";
 import unusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 // import pluginReact from "eslint-plugin-react";
 
 

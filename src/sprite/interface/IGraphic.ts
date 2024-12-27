@@ -1,8 +1,9 @@
-import { EventCategory } from '../enum/EventCategory';
+import { Point, Rectangle, Sprite } from 'pixi.js';
+
 import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
 import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
-import { Point, Rectangle, Sprite } from 'pixi.js';
+import { EventCategory } from '../enum/EventCategory';
 
 export interface IGraphic extends Sprite {
     needInitialization(): boolean;

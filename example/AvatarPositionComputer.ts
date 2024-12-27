@@ -1,6 +1,7 @@
+import { Rectangle } from 'pixi.js';
+
 import { Action } from './enum/Action';
 import { Direction } from './enum/Direction';
-import { Rectangle } from 'pixi.js';
 
 export class AvatarPositionComputer {
 

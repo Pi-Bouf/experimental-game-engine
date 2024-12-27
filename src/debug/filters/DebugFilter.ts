@@ -19,10 +19,10 @@ void main(void)
 // TODO fix the utils call, replace with @pixi/Colors
 export class DebugFilter extends Filter {
 
-    constructor(color: number) {
+    constructor(/* color: number */) {
         super(undefined, fragment);
 
-        const arrayColor = new Float32Array(3);
+        // const arrayColor = new Float32Array(3);
 
         // this.uniforms.color = hex2rgb(color, arrayColor);
     }

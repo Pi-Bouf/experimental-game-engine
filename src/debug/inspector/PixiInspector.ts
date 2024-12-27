@@ -1,4 +1,5 @@
 import { Container } from 'pixi.js';
+
 import { DebugFilter } from '../filters/DebugFilter';
 
 export class PixiInspector {

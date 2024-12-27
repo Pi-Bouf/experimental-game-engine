@@ -1,9 +1,10 @@
+import { BaseTexture, DisplayObject, Renderer, RenderTexture, SCALE_MODES, settings,Ticker } from 'pixi.js';
+
+import { IAssetsManager } from "./assets";
 import { AssetsManager } from './assets/AssetsManager';
-import { BaseTexture, DisplayObject, RenderTexture, Renderer, SCALE_MODES, Ticker, settings } from 'pixi.js';
-import { DoubleTicker } from './ticker/DoubleTicker';
-import {IAssetsManager} from "./assets";
-import { IEngineOption } from './interfaces/IEngineOption';
 import { Stage } from './geometry/Stage';
+import { IEngineOption } from './interfaces/IEngineOption';
+import { DoubleTicker } from './ticker/DoubleTicker';
 
 export class Engine {
     public canvasContainer: HTMLDivElement;

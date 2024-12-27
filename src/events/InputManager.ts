@@ -1,7 +1,8 @@
-import { ICurrentInputs } from './interface/ICurrentInputs';
+import { Point } from 'pixi.js';
+
 import { IFlushable } from '../interfaces/IFlushable';
 import { IResetable } from '../interfaces/IResetable';
-import { Point } from 'pixi.js';
+import { ICurrentInputs } from './interface/ICurrentInputs';
 
 export class InputManager implements IResetable, IFlushable {
     public currentCursor: Point;

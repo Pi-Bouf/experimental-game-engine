@@ -1,9 +1,9 @@
-import { Action } from './enum/Action';
-import { Avatar } from './Avatar';
-import { AvatarPositionComputer } from './AvatarPositionComputer';
-import { Direction } from './enum/Direction';
 import { Engine } from '../src/Engine';
 import { Position3D } from '../src/geometry/Position3D';
+import { Avatar } from './Avatar';
+import { AvatarPositionComputer } from './AvatarPositionComputer';
+import { Action } from './enum/Action';
+import { Direction } from './enum/Direction';
 
 const sandbox = new Engine({
     width: 1000,

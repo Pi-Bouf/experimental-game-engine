@@ -1,13 +1,14 @@
-import { AssetTexture } from '../assets';
 import { BaseTexture, Point, Sprite, Texture } from 'pixi.js';
-import { EventCategory } from './enum/EventCategory';
+
+import { AssetTexture } from '../assets';
 import { IAssetsManager } from '../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
-import { IGraphic } from './interface/IGraphic';
-import { IPosition3D } from '../geometry/interfaces/IPosition3D';
-import { ITween } from './tween/interface/ITween';
 import { PRectangle } from '../geometry';
+import { IPosition3D } from '../geometry/interfaces/IPosition3D';
 import { Position3D } from '../geometry/Position3D';
+import { EventCategory } from './enum/EventCategory';
+import { IGraphic } from './interface/IGraphic';
+import { ITween } from './tween/interface/ITween';
 import { Tween } from './tween/Tween';
 
 export class Graphic extends Sprite implements IGraphic {
@@ -141,11 +142,11 @@ export class Graphic extends Sprite implements IGraphic {
 
         if (this.bounds.width < 2 || this.bounds.height < 2) return false;
 
-        // @ts-ignore
+        // @ts-expect-error TODO fix that pls
         if (!this.texture.baseTexture.hitMap) this.generateHitMap();
 
         const point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.bounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.bounds.y) | 0);
-        // @ts-ignore
+        // @ts-expect-error TODO fix that pls
         return this.texture.baseTexture.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
     }
 
@@ -159,24 +160,24 @@ export class Graphic extends Sprite implements IGraphic {
 
     protected generateHitMap(baseTexture?: BaseTexture): void {
         const baseTex = baseTexture || this.texture.baseTexture;
-        // @ts-ignore
+        // @ts-expect-error TODO fix that pls
         if (baseTex.hitMap !== undefined) return;
         if (!baseTex.resource) return;
 
         let canvas, context;
-        //@ts-ignore
+        // @ts-expect-error TODO fix that too
         if (baseTex.resource.source instanceof ImageBitmap) {
             canvas = document.createElement('canvas');
             context = canvas.getContext('2d');
 
-            // @ts-ignore
+            // @ts-expect-error TODO fix that pls
             canvas.width = baseTex.resource.source.width;
-            // @ts-ignore
+            // @ts-expect-error TODO fix that pls
             canvas.height = baseTex.resource.source.height;
-            // @ts-ignore
+            // @ts-expect-error TODO fix that pls
             context.drawImage(baseTex.resource.source, 0, 0);
         } else {
-            // @ts-ignore
+            // @ts-expect-error TODO fix that pls
             canvas = baseTex.resource.source;
             context = canvas.getContext('2d');
         }
@@ -189,7 +190,7 @@ export class Graphic extends Sprite implements IGraphic {
             hitMap[i] = imageData.data[i * 4 + 3];
         }
 
-        // @ts-ignore
+        // @ts-expect-error TODO fix that pls
         baseTex.hitMap = hitMap;
     }
 

@@ -1,6 +1,7 @@
-import { Asset } from './types/Asset';
 import { Assets } from 'pixi.js';
+
 import { IAssetsManager } from './interfaces/IAssetsManager';
+import { Asset } from './types/Asset';
 
 export class AssetsManager implements IAssetsManager {
     protected _textures: Map<string, Asset | null>;

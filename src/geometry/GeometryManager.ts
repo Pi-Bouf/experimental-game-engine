@@ -1,7 +1,8 @@
+import { Point, Rectangle } from 'pixi.js';
+
 import { Engine } from '../Engine';
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IResetable } from '../interfaces/IResetable';
-import { Point, Rectangle } from 'pixi.js';
 import { Stage } from './Stage';
 
 export class GeometryManager implements IResetable {

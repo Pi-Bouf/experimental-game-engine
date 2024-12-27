@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let maxAnimationRate = 8;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let maxDisplayRate = 24;
 
 let lastAnimationTick = 0;
@@ -7,7 +9,6 @@ let minAnimationTick = 0;
 let lastDisplayTick = 0;
 let minDisplayTick = 0;
 
-let frame = 0;
 let interval = null;
 
 function updateMaxAnimationRate(animationRate) {
@@ -29,7 +30,6 @@ function updateInterval() {
 
         if ((now - lastAnimationTick) >= minAnimationTick) {
             lastAnimationTick = now;
-            frame++;
 
             postMessage('animation');
         }

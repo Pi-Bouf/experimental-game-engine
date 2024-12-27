@@ -1,4 +1,4 @@
-import {IAssetsManager} from "../assets";
+import { IAssetsManager } from "../assets";
 
 export interface IEngineOption {
     canvasContainer: HTMLDivElement,

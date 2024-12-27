@@ -1,11 +1,12 @@
 import { Container, DisplayObject } from 'pixi.js';
+
 import { Engine } from '../Engine';
-import { EventCategory } from '../sprite';
-import { GeometryManager } from './GeometryManager';
-import { ICurrentInputs } from '../events/interface/ICurrentInputs';
-import { IGraphic } from '../sprite/interface/IGraphic';
-import { IResetable } from '../interfaces/IResetable';
 import { InputManager } from '../events/InputManager';
+import { ICurrentInputs } from '../events/interface/ICurrentInputs';
+import { IResetable } from '../interfaces/IResetable';
+import { EventCategory } from '../sprite';
+import { IGraphic } from '../sprite/interface/IGraphic';
+import { GeometryManager } from './GeometryManager';
 
 function sortChildren(a: DisplayObject, b: DisplayObject): number {
     return b.zIndex - a.zIndex;
@@ -23,7 +24,7 @@ export class Stage extends Container implements IResetable {
     constructor(public engine: Engine) {
         super();
         this.sortableChildren = true;
-        // @ts-ignore
+
         this.interactiveChildren = false;
 
         this.lastHoverTick = 0;

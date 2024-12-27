@@ -1,10 +1,11 @@
-import { Action } from './enum/Action';
-import { AvatarPositionComputer } from './AvatarPositionComputer';
-import { Direction } from './enum/Direction';
+import { Point, Texture } from 'pixi.js';
+
+import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
 import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
-import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { Point, Texture } from 'pixi.js';
+import { AvatarPositionComputer } from './AvatarPositionComputer';
+import { Action } from './enum/Action';
+import { Direction } from './enum/Direction';
 
 export class Avatar extends Graphic {
 
