@@ -1,22 +1,20 @@
 import pluginJs from "@eslint/js";
-import importES6Autofix from "eslint-plugin-sort-imports-es6-autofix";
+import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-// import pluginReact from "eslint-plugin-react";
 
 
 export default [
-    { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
     { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
-    // pluginReact.configs.flat.recommended,
     {
         plugins: {
             "unused-imports": unusedImports,
-            "sort-imports-es6-autofix": importES6Autofix
+            "simple-import-sort": eslintPluginSimpleImportSort,
         },
+        ignores: ["**/dist/*"],
         rules: {
             "for-direction": "error",
             "func-call-spacing": ["error", "never"],
@@ -38,14 +36,13 @@ export default [
             "no-unused-vars": "off",
             "no-redeclare": "off",
             "object-curly-newline": ["error"],
+            "object-curly-spacing": ["error", "always"],
             "prefer-destructuring": "off",
             "radix": ["error", "as-needed"],
             "space-before-function-paren": "off",
-            "sort-imports-es6-autofix/sort-imports-es6": [2, {
-                "ignoreCase": false,
-                "ignoreMemberSort": false,
-                "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-            }],
+            "simple-import-sort/imports": "error",
+            "simple-import-sort/exports": "error",
+            "semi": "error",
             "unused-imports/no-unused-imports": "error"
         }
     }

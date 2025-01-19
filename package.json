@@ -15,27 +15,25 @@
   "scripts": {
     "watch": "parcel example/index.html",
     "build": "tsc",
-    "lint": "eslint --ext .js,.ts ./src --color",
-    "lint-fix": "eslint --ext .js,.ts ./src --color",
+    "lint": "eslint src --color",
+    "lint:fix": "eslint src --color --fix",
     "clean": "rm -rf .parcel-cache dist",
     "check": "tsc --noEmit",
-    "prepublish": "yarn clean; yarn lint-fix; yarn build"
+    "prepublish": "yarn clean; yarn lint:fix; yarn build"
   },
   "dependencies": {
     "pixi.js": "7.4.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@types/node": "^22.10.2",
-    "eslint": "^9.17.0",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^22.10.7",
+    "eslint": "^9.18.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "parcel": "^2.13.3",
     "punycode": "^1.4.1",
     "querystring-es3": "^0.2.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.1"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
   },
   "keywords": [
     "pixijs",

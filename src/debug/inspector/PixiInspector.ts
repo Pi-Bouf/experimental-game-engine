@@ -1,6 +1,5 @@
 import { Container } from 'pixi.js';
 
-import { DebugFilter } from '../filters/DebugFilter';
 
 export class PixiInspector {
 
@@ -65,7 +64,7 @@ export class PixiInspector {
 
             listElement.onclick = () => {
                 child.filters = [
-                    new DebugFilter(0x990012),
+                    // new DebugFilter(0x990012),
                 ];
             };
 

@@ -12,6 +12,7 @@
     "noImplicitReturns": true,
     "strictNullChecks": false,
     "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
     "module": "es2022",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
