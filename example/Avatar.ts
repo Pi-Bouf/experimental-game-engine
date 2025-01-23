@@ -25,18 +25,18 @@ export class Avatar extends Graphic {
 
     public initialize(resourceManager: IAssetsManager): void {
         if (resourceManager.has(this.id)) {
-            const baseTexture = resourceManager.get(this.id).baseTexture;
+            const baseTexture = (resourceManager.get(this.id) as Texture).source;
 
             this.currentTextures = [
-                new Texture(baseTexture, AvatarPositionComputer.getPosition(this.action, this.direction)[0]),
-                new Texture(baseTexture, AvatarPositionComputer.getPosition(this.action, this.direction)[1]),
-                new Texture(baseTexture, AvatarPositionComputer.getPosition(this.action, this.direction)[2]),
-                new Texture(baseTexture, AvatarPositionComputer.getPosition(this.action, this.direction)[3]),
+                new Texture({ source: baseTexture, frame: AvatarPositionComputer.getPosition(this.action, this.direction)[0] }),
+                new Texture({ source: baseTexture, frame: AvatarPositionComputer.getPosition(this.action, this.direction)[1] }),
+                new Texture({ source: baseTexture, frame: AvatarPositionComputer.getPosition(this.action, this.direction)[2] }),
+                new Texture({ source: baseTexture, frame: AvatarPositionComputer.getPosition(this.action, this.direction)[3] }),
             ];
 
             this.texture = this.currentTextures[0];
 
-            this.updateBounds();
+            this.updateGraphicBounds();
 
             this.setInitialized();
         }
@@ -65,8 +65,8 @@ export class Avatar extends Graphic {
         super.updatePosition(stageOffset);
     }
 
-    updateBounds() {
-        super.updateBounds();
+    updateGraphicBounds() {
+        super.updateGraphicBounds();
     }
 
 

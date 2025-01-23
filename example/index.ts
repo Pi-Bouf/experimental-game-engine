@@ -19,40 +19,43 @@ const sandbox = new Engine({
     },
 });
 
-AvatarPositionComputer.init();
+sandbox.init().then(() => {
 
-// for (let i = 0; i < 100; i++) {
-//
-//     const archer = new Avatar('avatar/archer_001.png');
-//     archer.setPosition(new Position3D(Math.random() * 1300 | 0, Math.random() * 800 | 0));
-//     sandbox.stage.addChild(archer);
-// }
+    AvatarPositionComputer.init();
+
+    // for (let i = 0; i < 100; i++) {
+    //
+    //     const archer = new Avatar('avatar/archer_001.png');
+    //     archer.setPosition(new Position3D(Math.random() * 1300 | 0, Math.random() * 800 | 0));
+    //     sandbox.stage.addChild(archer);
+    // }
 
 
-const direction = [Direction.N, Direction.E, Direction.S, Direction.W];
-const action = [
-    Action.WAIT,
-    Action.WALK,
-    Action.RUN,
-    Action.ATTACK,
-    Action.DEFEND,
-    Action.BEHIT,
-    Action.USE,
-    Action.DIE,
-];
+    const direction = [Direction.N, Direction.E, Direction.S, Direction.W];
+    const action = [
+        Action.WAIT,
+        Action.WALK,
+        Action.RUN,
+        Action.ATTACK,
+        Action.DEFEND,
+        Action.BEHIT,
+        Action.USE,
+        Action.DIE,
+    ];
 
-const avatar = ['avatar/archer_001.png', 'avatar/wizard_001.png', 'avatar/soldier_001.png'];
+    const avatar = ['avatar/archer_001.png', 'avatar/archer_001.png', 'avatar/archer_001.png'];
 
-for (let i = 0; i < 1000; i++) {
-    const randomDirection = direction[Math.random() * 4 | 0];
-    const randomAction = action[Math.random() * 8 | 0];
-    const randomAvatar = avatar[Math.random() * 3 | 0];
+    for (let i = 0; i < 1000; i++) {
+        const randomDirection = direction[Math.random() * 4 | 0];
+        const randomAction = action[Math.random() * 8 | 0];
+        const randomAvatar = avatar[Math.random() * 3 | 0];
 
-    const player = new Avatar(randomAvatar, randomAction, randomDirection);
-    player.setPosition3D(new Position3D(Math.random() * 1000 | 0, Math.random() * 700 | 0));
-    sandbox.stage.addChild(player);
-}
+        const player = new Avatar(randomAvatar, randomAction, randomDirection);
+        player.setPosition3D(new Position3D(Math.random() * 1000 | 0, Math.random() * 700 | 0));
+        sandbox.stage.addChild(player);
+    }
 
 // const player = new Avatar('avatar/wizard_001.png',Action.ATTACK, Direction.E);
 // player.setPosition(new Position3D(100, 100));
 // sandbox.stage.addChild(player);
+});
