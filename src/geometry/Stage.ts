@@ -1,18 +1,16 @@
-import { Container, DisplayObject } from 'pixi.js';
+import { Container, ViewContainer } from 'pixi.js';
 
 import { Engine } from '../Engine';
-import { InputManager } from '../events/InputManager';
-import { ICurrentInputs } from '../events/interface/ICurrentInputs';
+import { ICurrentInputs, InputManager } from '../events';
 import { IResetable } from '../interfaces/IResetable';
-import { EventCategory } from '../sprite';
-import { IGraphic } from '../sprite/interface/IGraphic';
+import { EventCategory, IGraphic } from '../sprite';
 import { GeometryManager } from './GeometryManager';
 
-function sortChildren(a: DisplayObject, b: DisplayObject): number {
+function sortChildren(a: ViewContainer, b: ViewContainer): number {
     return b.zIndex - a.zIndex;
 }
 
-export class Stage extends Container implements IResetable {
+export class Stage extends Container<IGraphic> implements IResetable {
     readonly children: IGraphic[];
 
     private inputManager: InputManager;
@@ -41,7 +39,7 @@ export class Stage extends Container implements IResetable {
             if (child.needInitialization()) {
                 child.initialize(this.engine.assetsManager);
             } else {
-                child.checkBounds(this.geometryManager.stageBounds);
+                child.checkGraphicBounds(this.geometryManager.stageBounds);
 
                 if (child.visible) {
                     if (child.needFrameUpdate()) child.updateFrame();
@@ -95,24 +93,12 @@ export class Stage extends Container implements IResetable {
     }
 
     sortChildren(): void {
-        let sortRequired = false;
+        if (!this.sortDirty) return;
+        this.sortDirty = false;
 
-        for (let i = 0, j = this.children.length; i < j; ++i) {
-            const child = this.children[i];
-
-            child._lastSortedIndex = i;
-
-            if (!sortRequired && child.zIndex !== 0) {
-                sortRequired = true;
-                i = this.children.length + 1;
-            }
-        }
-
-        if (sortRequired && this.children.length > 1) {
+        if (this.children.length > 1) {
             this.children.sort(sortChildren);
         }
-
-        this.sortDirty = false;
     }
 
     public reset() {

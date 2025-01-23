@@ -1,15 +1,16 @@
-import { Point, Rectangle } from 'pixi.js';
+import { Point } from 'pixi.js';
 
 import { Engine } from '../Engine';
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { IResetable } from '../interfaces/IResetable';
+import { PRectangle } from "./PRectangle";
 import { Stage } from './Stage';
 
 export class GeometryManager implements IResetable {
     public engine: Engine;
     public needSizeUpdate: boolean;
     public needPositionUpdate: boolean;
-    public stageBounds: Rectangle;
+    public stageBounds: PRectangle;
     public stageOffset: Point;
 
     public constructor(public stage: Stage) {
@@ -24,7 +25,7 @@ export class GeometryManager implements IResetable {
         this.needSizeUpdate = false;
         this.needPositionUpdate = true;
 
-        this.stageBounds = new Rectangle();
+        this.stageBounds = new PRectangle();
         this.stageOffset = new Point();
     }
 
@@ -42,7 +43,7 @@ export class GeometryManager implements IResetable {
     }
 
     public checkStageSize() {
-        this.stageBounds = new Rectangle(
+        this.stageBounds = new PRectangle(
             0,
             0,
             this.stage.engine.canvasContainer.clientWidth | 0,

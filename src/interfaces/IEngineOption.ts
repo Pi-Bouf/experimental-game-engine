@@ -1,7 +1,7 @@
 import { IAssetsManager } from "../assets";
 
 export interface IEngineOption {
-    canvasContainer: HTMLDivElement,
+    canvasContainer: HTMLElement,
     width: number,
     height: number,
     autoResize: boolean,

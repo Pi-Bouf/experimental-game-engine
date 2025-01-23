@@ -1,4 +1,4 @@
-import { BaseTexture, Point, Sprite, Texture } from 'pixi.js';
+import { ImageSource, Point, Sprite, Texture } from 'pixi.js';
 
 import { AssetTexture } from '../assets';
 import { IAssetsManager } from '../assets/interfaces/IAssetsManager';
@@ -11,12 +11,10 @@ import { IGraphic } from './interface/IGraphic';
 import { ITween } from './tween/interface/ITween';
 import { Tween } from './tween/Tween';
 
-export class Graphic extends Sprite implements IGraphic {
-    public name: string;
-
+export abstract class Graphic extends Sprite implements IGraphic {
     protected id: string;
     private position3D: IPosition3D;
-    private bounds: PRectangle;
+    private graphicBounds: PRectangle;
     private initialized: boolean;
     private positionUpdated: boolean;
     private frameUpdated: boolean;
@@ -31,11 +29,9 @@ export class Graphic extends Sprite implements IGraphic {
         // (PIXI) By default, the renderer don't need to display this shit !
         this.visible = false;
 
-        this.name = '';
-
         this.id = id;
         this.position3D = new Position3D();
-        this.bounds = new PRectangle();
+        this.graphicBounds = new PRectangle();
         this.initialized = texture !== Texture.EMPTY;
         this.positionUpdated = true;
         this.frameUpdated = true;
@@ -59,7 +55,7 @@ export class Graphic extends Sprite implements IGraphic {
     public initialize(resourceManager: IAssetsManager): void {
         if (resourceManager.has(this.id)) {
             this.texture = resourceManager.get<AssetTexture>(this.id);
-            this.updateBounds();
+            this.updateGraphicBounds();
             // this.generateHitMap();
 
             this.setInitialized();
@@ -80,6 +76,7 @@ export class Graphic extends Sprite implements IGraphic {
 
     public updateFrame(): void {
         // Do nothing here, no need to update frame
+        // To do something you have to extend it :)
         this.setFrameUpdated();
     }
 
@@ -116,38 +113,38 @@ export class Graphic extends Sprite implements IGraphic {
         this.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
         this.zIndex = this.position3D.z;
         this.setPositionUpdated();
-        this.updateBounds();
+        this.updateGraphicBounds();
     }
 
     getCurrentPosition(): IPosition3D {
         return this.position3D;
     }
 
-    public getBounds() {
-        return this.bounds;
+    public getGraphicBounds() {
+        return this.graphicBounds;
     }
 
-    public updateBounds(): void {
-        this.bounds = new PRectangle(this.position.x, this.position.y, this.texture.width, this.texture.height);
+    public updateGraphicBounds(): void {
+        this.graphicBounds = new PRectangle(this.position.x, this.position.y, this.texture.width, this.texture.height);
     }
 
-    public checkBounds(bounds: PRectangle): void {
-        this.visible = bounds.intersects(this.bounds);
+    public checkGraphicBounds(graphicBounds: PRectangle): void {
+        this.visible = graphicBounds.intersects(this.graphicBounds);
     }
 
     public checkInput(currentInputs: ICurrentInputs): boolean {
-        if (!this.bounds) return false;
+        if (!this.graphicBounds) return false;
 
-        if (!this.bounds.contains(currentInputs.currentCursor.x, currentInputs.currentCursor.y)) return false;
+        if (!this.graphicBounds.contains(currentInputs.currentCursor.x, currentInputs.currentCursor.y)) return false;
 
-        if (this.bounds.width < 2 || this.bounds.height < 2) return false;
+        if (this.graphicBounds.width < 2 || this.graphicBounds.height < 2) return false;
 
         // @ts-expect-error TODO fix that pls
-        if (!this.texture.baseTexture.hitMap) this.generateHitMap();
+        if (!this.texture.source.hitMap) this.generateHitMap();
 
-        const point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.bounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.bounds.y) | 0);
+        const point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.graphicBounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.graphicBounds.y) | 0);
         // @ts-expect-error TODO fix that pls
-        return this.texture.baseTexture.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
+        return this.texture.source.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
     }
 
     public checkHover(currentInputs: ICurrentInputs): boolean {
@@ -158,24 +155,23 @@ export class Graphic extends Sprite implements IGraphic {
         return this.checkInput(currentInputs);
     }
 
-    protected generateHitMap(baseTexture?: BaseTexture): void {
-        const baseTex = baseTexture || this.texture.baseTexture;
+    protected generateHitMap(): void {
+        const baseTex: ImageSource = this.texture.source;
+
+        console.log(this.texture.source, baseTex.resource instanceof ImageBitmap);
+
         // @ts-expect-error TODO fix that pls
         if (baseTex.hitMap !== undefined) return;
         if (!baseTex.resource) return;
 
         let canvas, context;
-        // @ts-expect-error TODO fix that too
-        if (baseTex.resource.source instanceof ImageBitmap) {
+        if (baseTex.resource instanceof ImageBitmap) {
             canvas = document.createElement('canvas');
             context = canvas.getContext('2d');
 
-            // @ts-expect-error TODO fix that pls
-            canvas.width = baseTex.resource.source.width;
-            // @ts-expect-error TODO fix that pls
-            canvas.height = baseTex.resource.source.height;
-            // @ts-expect-error TODO fix that pls
-            context.drawImage(baseTex.resource.source, 0, 0);
+            canvas.width = baseTex.resource.width;
+            canvas.height = baseTex.resource.height;
+            context.drawImage(baseTex.resource, 0, 0);
         } else {
             // @ts-expect-error TODO fix that pls
             canvas = baseTex.resource.source;

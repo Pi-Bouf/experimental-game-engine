@@ -1,7 +1,8 @@
-import { Point, Rectangle, Sprite } from 'pixi.js';
+import { Point, Sprite } from 'pixi.js';
 
 import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
+import { PRectangle } from "../../geometry";
 import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
 import { EventCategory } from '../enum/EventCategory';
 
@@ -26,9 +27,9 @@ export interface IGraphic extends Sprite {
     setPosition3D(position3D: IPosition3D): void;
     getCurrentPosition(): IPosition3D;
 
-    getBounds(): Rectangle;
-    updateBounds(): void;
-    checkBounds(bounds: Rectangle): void;
+    getGraphicBounds(): PRectangle;
+    updateGraphicBounds(): void;
+    checkGraphicBounds(graphicBounds: PRectangle): void;
 
     checkHover(currentInputs: ICurrentInputs): boolean;
     checkInput(currentInputs: ICurrentInputs): boolean;
