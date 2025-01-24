@@ -1,14 +1,10 @@
-import { Container, ViewContainer } from 'pixi.js';
+import { Container } from 'pixi.js';
 
 import { Engine } from '../Engine';
 import { ICurrentInputs, InputManager } from '../events';
 import { IResetable } from '../interfaces/IResetable';
 import { EventCategory, IGraphic } from '../sprite';
 import { GeometryManager } from './GeometryManager';
-
-function sortChildren(a: ViewContainer, b: ViewContainer): number {
-    return b.zIndex - a.zIndex;
-}
 
 export class Stage extends Container<IGraphic> implements IResetable {
     readonly children: IGraphic[];
@@ -89,15 +85,6 @@ export class Stage extends Container<IGraphic> implements IResetable {
             }
 
             this.lastHoverTick = now;
-        }
-    }
-
-    sortChildren(): void {
-        if (!this.sortDirty) return;
-        this.sortDirty = false;
-
-        if (this.children.length > 1) {
-            this.children.sort(sortChildren);
         }
     }
 
