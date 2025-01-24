@@ -987,6 +987,11 @@
   resolved "https://registry.yarnpkg.com/@types/css-font-loading-module/-/css-font-loading-module-0.0.12.tgz#65494833928823f998fbe8e86312821875d80db5"
   integrity sha512-x2tZZYkSxXqWvTDgveSynfjq/T2HyiZHXb00j/+gy19yp70PHCizM48XFdjBCWH7eHBD0R5i/pw9yMBP/BH5uA==
 
+"@types/css-font-loading-module@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@types/css-font-loading-module/-/css-font-loading-module-0.0.14.tgz#32f23ec2be970e557a336d77d97a2d5c0ab6d4af"
+  integrity sha512-+EwJ/RW2vPqbYn0JXRHy593huPCtgmLF/kg57iLK9KUn6neTqGGOTZ0CbssP8Uou/gqT/5XmWKQ8A7ve7xNV6A==
+
 "@types/earcut@^2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@types/earcut/-/earcut-2.1.4.tgz#5811d7d333048f5a7573b22ddc84923e69596da6"
@@ -2229,10 +2234,10 @@ picomatch@^2.3.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-pixi.js@8.7.1:
-  version "8.7.1"
-  resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-8.7.1.tgz#efe75098e411bd540fd4ed327ab2ea9fd079a857"
-  integrity sha512-JLsss/AX5Utfg5/s/5iDpTWrqQM5butPm5bs0dpUP9sKRQHV7D2+rTcPw19lNJHwZ6yU0XUFrp80xzyr3bY3FA==
+pixi.js@8.7.2:
+  version "8.7.2"
+  resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-8.7.2.tgz#07b68d59046af95c220a0c20d8879f9a42f887c5"
+  integrity sha512-56bFa4uUAbK7MFhwaMb2oCU1GkeXLoKO4FJlwW78pdMBj1+L1FDquGmQxMDGp4uhg8gXa91KxCxHwjQBPGfgVw==
   dependencies:
     "@pixi/colord" "^2.9.6"
     "@types/css-font-loading-module" "^0.0.12"
