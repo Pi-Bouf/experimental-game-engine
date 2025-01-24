@@ -144,7 +144,7 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
         const point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.graphicBounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.graphicBounds.y) | 0);
         // @ts-expect-error TODO fix that pls
-        return this.texture.source.hitMap[point.y * this.texture.baseTexture.width + point.x] > 0;
+        return this.texture.source.hitMap[point.y * this.texture.source.width + point.x] > 0;
     }
 
     public checkHover(currentInputs: ICurrentInputs): boolean {
@@ -157,8 +157,6 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
     protected generateHitMap(): void {
         const baseTex: ImageSource = this.texture.source;
-
-        console.log(this.texture.source, baseTex.resource instanceof ImageBitmap);
 
         // @ts-expect-error TODO fix that pls
         if (baseTex.hitMap !== undefined) return;
