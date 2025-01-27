@@ -23,8 +23,7 @@ export class Engine {
         AbstractRenderer.defaultOptions.resolution = 1;
         TexturePool.textureOptions.scaleMode = 'nearest';
         Ticker.shared.autoStart = false;
-        Ticker.shared.stop();
-        Ticker.shared.maxFPS = 1;
+        Ticker.system.autoStart = false;
     }
 
     public async init() {
@@ -33,6 +32,9 @@ export class Engine {
             height: this.options.height,
             backgroundAlpha: this.options.backgroundAlpha,
         });
+
+        Ticker.shared.stop();
+        Ticker.system.stop();
 
         this.canvasContainer = this.options.canvasContainer;
         this.canvasContainer.innerHTML = '';

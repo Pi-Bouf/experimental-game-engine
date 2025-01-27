@@ -45,13 +45,13 @@ sandbox.init().then(() => {
 
     const avatar = ['avatar/archer_001.png', 'avatar/archer_001.png', 'avatar/archer_001.png'];
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 5000; i++) {
         const randomDirection = direction[Math.random() * 4 | 0];
         const randomAction = action[Math.random() * 8 | 0];
         const randomAvatar = avatar[Math.random() * 3 | 0];
 
         const player = new Avatar(randomAvatar, randomAction, randomDirection);
-        player.setPosition3D(new Position3D(Math.random() * 1000 | 0, Math.random() * 700 | 0));
+        player.setPosition3D(new Position3D(Math.random() * 800 | 0, Math.random() * 600 | 0));
         sandbox.stage.addChild(player);
     }
 
