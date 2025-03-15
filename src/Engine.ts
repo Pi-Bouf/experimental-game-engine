@@ -1,6 +1,6 @@
 import {
-    AbstractRenderer, autoDetectRenderer,
-    Renderer, TexturePool,
+    AbstractRenderer, autoDetectRenderer, Container,
+    Renderer, Texture, TexturePool,
     Ticker
 } from 'pixi.js';
 
@@ -55,9 +55,9 @@ export class Engine {
         await this.assetsManager.init(this.options.images.baseFiles);
     }
 
-    // public generateTexture(object: DisplayObject): Texture {
-    //     return this.renderer.generateTexture(object);
-    // }
+    public generateTexture(object: Container): Texture {
+        return this.renderer.generateTexture(object);
+    }
 
     public reset() {
         this.stage.reset();
