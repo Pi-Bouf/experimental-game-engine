@@ -23,20 +23,20 @@
     "prepublish": "yarn clean; yarn lint:fix; yarn build"
   },
   "dependencies": {
-    "pixi.js": "8.7.2"
+    "pixi.js": "8.9.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.18.0",
+    "@eslint/js": "^9.24.0",
     "@types/css-font-loading-module": "^0.0.14",
-    "@types/node": "^22.10.10",
-    "eslint": "^9.18.0",
+    "@types/node": "^22.14.1",
+    "eslint": "^9.24.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "http-server": "^14.1.1",
-    "parcel": "^2.13.3",
+    "parcel": "^2.14.4",
     "querystring-es3": "^0.2.1",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.21.0"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.30.1"
   },
   "keywords": [
     "pixijs",
