@@ -4,7 +4,7 @@ import {
     Ticker
 } from 'pixi.js';
 
-import { AssetsManager,IAssetsManager } from "./assets";
+import { AssetsManager, IAssetsManager } from "./assets";
 import { Stage } from './geometry';
 import { IEngineOption } from './interfaces/IEngineOption';
 import { DoubleTicker } from './ticker/DoubleTicker';
@@ -31,6 +31,8 @@ export class Engine {
             width: this.options.width,
             height: this.options.height,
             backgroundAlpha: this.options.backgroundAlpha,
+            antialias: false,
+            roundPixels: true
         });
 
         Ticker.shared.stop();
