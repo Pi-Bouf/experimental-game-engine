@@ -4,6 +4,7 @@
     "isolatedModules": true,
     "allowJs": true,
     "sourceMap": true,
+    "declaration": true,
     "removeComments": false,
     "strict": true,
     "noImplicitAny": true,
@@ -18,11 +19,11 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "lib": ["es6","DOM"],
+    "outDir": "./dist",
     "paths": {
       "src/*": ["src/*"]
     },
-    "outDir": "./dist",
-    "declaration": true,
+    "skipLibCheck": true,
     "typeRoots": ["node_modules/@types"],
   },
   "exclude": [
@@ -30,6 +31,7 @@
     "**/dist/**",
     "**/test/**",
     "**/lib/**",
-    "**/example/**"
+    "**/example/**",
+    "eslint.config.mjs"
   ]
 }
