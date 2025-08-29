@@ -27,12 +27,22 @@ export class Engine {
     }
 
     public async init() {
+        // this.renderer = new WebGPURenderer();
+        // await this.renderer.init({
+        //     width: this.options.width,
+        //     height: this.options.height,
+        //     backgroundAlpha: this.options.backgroundAlpha,
+        //     antialias: false,
+        //     roundPixels: true,
+        // });
+
+
         this.renderer = await autoDetectRenderer({
             width: this.options.width,
             height: this.options.height,
             backgroundAlpha: this.options.backgroundAlpha,
             antialias: false,
-            roundPixels: true
+            roundPixels: true,
         });
 
         Ticker.shared.stop();

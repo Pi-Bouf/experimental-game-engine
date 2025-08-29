@@ -16,13 +16,13 @@ export class Stage extends Container<IGraphic> implements IResetable {
     private minHoverTick: number;
 
     constructor(public engine: Engine) {
-        super();
+        super({ isRenderGroup: true });
         this.sortableChildren = true;
 
         this.interactiveChildren = false;
 
         this.lastHoverTick = 0;
-        this.minHoverTick = 10;
+        this.minHoverTick = 300;
 
         this.inputManager = new InputManager();
         this.geometryManager = new GeometryManager(this);
