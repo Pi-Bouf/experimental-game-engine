@@ -59,7 +59,7 @@ export class PixiInspector {
         this.mainList.innerHTML = '';
 
         this.container.children.forEach(child => {
-            const listElement = this.createListElement(`${child.constructor.name} (${child.name})`);
+            const listElement = this.createListElement(`${child.constructor.name} (${child.name}) => X: ${child.x} Y: ${child.y}`);
             this.mainList.appendChild(listElement);
 
             listElement.onclick = () => {

@@ -2,6 +2,7 @@ import { Engine } from '../src/Engine';
 import { Position3D } from '../src/geometry/Position3D';
 import { Avatar } from './Avatar';
 import { AvatarPositionComputer } from './AvatarPositionComputer';
+import { Effect } from "./Effect";
 import { Action } from './enum/Action';
 import { Direction } from './enum/Direction';
 
@@ -12,12 +13,15 @@ const sandbox = new Engine({
     backgroundAlpha: 0,
     mouseEventFrequency: 10000,
     autoResize: true,
-    maxAnimationRate: 8,
+    maxAnimationRate: 16,
     maxDisplayRate: 140,
     images: {
         imageDomain: 'http://127.0.0.1:8081/',
     },
 });
+
+const urlParams = new URLSearchParams(window.location.search);
+const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')) : 100;
 
 sandbox.init().then(() => {
 
@@ -43,16 +47,23 @@ sandbox.init().then(() => {
         Action.DIE,
     ];
 
-    const avatar = ['avatar/archer_001.png', 'avatar/archer_001.png', 'avatar/archer_001.png'];
+    const avatars = ['avatar/archer_001.png', 'avatar/archer_001.png', 'avatar/archer_001.png'];
+    const effects = ['effect/effect_001.png', 'effect/effect_002.png'];
 
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < avatarCount; i++) {
         const randomDirection = direction[Math.random() * 4 | 0];
         const randomAction = action[Math.random() * 8 | 0];
-        const randomAvatar = avatar[Math.random() * 3 | 0];
+        const randomAvatar = avatars[Math.random() * 3 | 0];
 
         const player = new Avatar(randomAvatar, randomAction, randomDirection);
-        player.setPosition3D(new Position3D(Math.random() * 800 | 0, Math.random() * 600 | 0));
+        player.setPosition3D(new Position3D(Math.random() * 1300 | 0, Math.random() * 700 | 0));
         sandbox.stage.addChild(player);
+
+        const randomEffect = effects[Math.random() * 2 | 0];
+
+        const effect = new Effect(randomEffect);
+        effect.setPosition3D(new Position3D(Math.random() * 1300 | 0, Math.random() * 700 | 0));
+        sandbox.stage.addChild(effect);
     }
 
 // const player = new Avatar('avatar/wizard_001.png',Action.ATTACK, Direction.E);
