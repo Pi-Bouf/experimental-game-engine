@@ -62,8 +62,13 @@ sandbox.init().then(() => {
         const randomEffect = effects[Math.random() * 2 | 0];
 
         const effect = new Effect(randomEffect);
-        effect.setPosition3D(new Position3D(Math.random() * 1300 | 0, Math.random() * 700 | 0));
+        effect.setPosition3D(new Position3D(32, 0));
         sandbox.stage.addChild(effect);
+        effect.follow(player);
+
+        setTimeout(() => {
+            effect.unfollow();
+        }, Math.random() * 3000 | 0);
     }
 
 // const player = new Avatar('avatar/wizard_001.png',Action.ATTACK, Direction.E);

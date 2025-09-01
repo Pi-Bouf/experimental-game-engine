@@ -20,6 +20,8 @@ export abstract class Graphic extends Sprite implements IGraphic {
     private frameUpdated: boolean;
     private tween: ITween;
 
+    private followedGraphic: Graphic;
+
     private canBeHovered: boolean;
     private clickable: boolean;
 
@@ -101,7 +103,7 @@ export abstract class Graphic extends Sprite implements IGraphic {
     }
 
     public needPositionUpdate(): boolean {
-        return !this.positionUpdated;
+        return !this.positionUpdated || this.followedGraphic !== undefined;
     }
 
     public setPosition3D(position3D: IPosition3D): void {
@@ -110,8 +112,14 @@ export abstract class Graphic extends Sprite implements IGraphic {
     }
 
     public updatePosition(stageOffset: Point): void {
-        this.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
-        this.zIndex = this.position3D.z;
+        if(this.followedGraphic !== undefined) {
+            this.position.set(this.followedGraphic.position.x + this.position3D.x, this.followedGraphic.position.y + this.position3D.y);
+            this.zIndex = this.followedGraphic.position3D.z + this.position3D.z;
+        } else {
+            this.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
+            this.zIndex = this.position3D.z;
+        }
+
         this.setPositionUpdated();
         this.updateGraphicBounds();
     }
@@ -130,6 +138,14 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
     public checkGraphicBounds(graphicBounds: PRectangle): void {
         this.visible = graphicBounds.intersects(this.graphicBounds);
+    }
+
+    public follow(graphic: Graphic) {
+        this.followedGraphic = graphic;
+    }
+
+    public unfollow() {
+        this.followedGraphic = undefined;
     }
 
     public checkInput(currentInputs: ICurrentInputs): boolean {
