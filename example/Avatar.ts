@@ -1,5 +1,6 @@
 import { Point, Texture } from 'pixi.js';
 
+import { Position3D, TranslateTween } from "../src";
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
 import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
@@ -40,6 +41,16 @@ export class Avatar extends Graphic {
 
             this.setInitialized();
         }
+    }
+
+    public needTweenUpdate(): boolean {
+        const test = super.needTweenUpdate();
+
+        if(!test) {
+            this.addTween(new TranslateTween(this, 2000, { positions: new Position3D(Math.random() * 1300 | 0, Math.random() * 700 | 0) }));
+        }
+
+        return true;
     }
 
     updateFrame() {
