@@ -1,0 +1,20 @@
+x-node: &node
+  image: node:22-alpine
+  working_dir: /app
+  volumes:
+    - ./:/app
+    - node_modules:/app/node_modules
+  environment:
+    - NODE_ENV=development
+
+services:
+  assets:
+    <<: *node
+    command: ["yarn", "serve:assets"]
+
+  engine:
+    <<: *node
+    command: ["yarn", "watch"]
+
+volumes:
+  node_modules:
