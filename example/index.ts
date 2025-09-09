@@ -16,7 +16,7 @@ const sandbox = new Engine({
     maxAnimationRate: 16,
     maxDisplayRate: 140,
     images: {
-        imageDomain: 'http://127.0.0.1:8081/',
+        imageDomain: process.env.ASSETS_URL ?? 'http://127.0.0.1:8081/',
     },
 });
 

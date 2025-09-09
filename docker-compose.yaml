@@ -11,11 +11,11 @@ x-node: &node
 services:
   assets:
     <<: *node
-    command: ["yarn", "serve:assets"]
+    command: ["sh", "-c", "yarn install && yarn serve:assets"]
 
   engine:
     <<: *node
-    command: ["yarn", "watch"]
+    command: ["sh", "-c", "yarn install && yarn watch"]
 
 volumes:
   node_modules:
