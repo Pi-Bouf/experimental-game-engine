@@ -50,6 +50,8 @@ sandbox.init().then(() => {
     const avatars = ['avatar/archer_001.png', 'avatar/archer_001.png', 'avatar/archer_001.png'];
     const effects = ['effect/effect_001.png', 'effect/effect_002.png'];
 
+    console.log(`Creating ${avatarCount} avatars`);
+
     for (let i = 0; i < avatarCount; i++) {
         const randomDirection = direction[Math.random() * 4 | 0];
         const randomAction = action[Math.random() * 8 | 0];
@@ -65,13 +67,5 @@ sandbox.init().then(() => {
         effect.setPosition3D(new Position3D(32, 0));
         sandbox.stage.addChild(effect);
         effect.follow(player);
-
-        setTimeout(() => {
-            effect.unfollow();
-        }, Math.random() * 3000 | 0);
     }
-
-// const player = new Avatar('avatar/wizard_001.png',Action.ATTACK, Direction.E);
-// player.setPosition(new Position3D(100, 100));
-// sandbox.stage.addChild(player);
 });
