@@ -43,11 +43,9 @@ export class Avatar extends Graphic {
 
             this.setInitialized();
 
-            const offset = 53;
+            const offset = -53;
 
-            // this.scale.set(2);
-
-            this.anchor.set(0.5, (144-offset)/144);
+            this.setAnchorPoint('middle', offset);
             this.drawAnchorPoint();
             this.filters = [ReplaceAlphaFilter()];
         }

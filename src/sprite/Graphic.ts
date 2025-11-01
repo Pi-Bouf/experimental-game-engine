@@ -56,13 +56,13 @@ export abstract class Graphic extends Sprite implements IGraphic {
     protected setAnchorPoint(xOffset: 'left' | 'right' | 'middle', yPxOffset: number) {
         switch (xOffset) {
             case 'left':
-                this.anchor.set(0, (this.height - yPxOffset) / this.height);
+                this.anchor.set(0, (this.height + yPxOffset) / this.height);
                 break;
             case 'right':
-                this.anchor.set(1, (this.height - yPxOffset) / this.height);
+                this.anchor.set(1, (this.height + yPxOffset) / this.height);
                 break;
             case 'middle':
-                this.anchor.set(0.5, (this.height - yPxOffset) / this.height);
+                this.anchor.set(0.5, (this.height + yPxOffset) / this.height);
         }
     }
 
