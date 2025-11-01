@@ -1,10 +1,6 @@
 x-node: &node
   image: node:22-alpine
   working_dir: /app
-  command: ["yarn", "install"]
-  volumes:
-    - ./:/app
-    - node_modules:/app/node_modules
   environment:
     - NODE_ENV=development
 
@@ -12,14 +8,21 @@ services:
   assets:
     <<: *node
     command: ["sh", "-c", "yarn install && yarn serve:assets"]
+    volumes:
+      - ./:/app
+      - node_modules_assets:/app/node_modules
     ports:
       - 8081:8081
 
   engine:
     <<: *node
     command: ["sh", "-c", "yarn install && yarn watch"]
+    volumes:
+      - ./:/app
+      - node_modules_engine:/app/node_modules
     ports:
       - 1234:1234
 
 volumes:
-  node_modules:
+  node_modules_assets:
+  node_modules_engine:
