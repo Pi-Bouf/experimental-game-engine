@@ -1,7 +1,7 @@
 import { Point, Texture } from 'pixi.js';
 
-import { Position3D, TranslateTween } from "../src";
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
+import { ReplaceAlphaFilter } from "../src/debug/filters/ReplaceAlphaFilter";
 import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
 import { AvatarPositionComputer } from './AvatarPositionComputer';
@@ -22,6 +22,8 @@ export class Avatar extends Graphic {
 
         this.frameCount = 0;
         this.currentTextures = [];
+
+        // this.anchor.set(0.5, 1);
     }
 
     public initialize(resourceManager: IAssetsManager): void {
@@ -40,17 +42,24 @@ export class Avatar extends Graphic {
             this.updateGraphicBounds();
 
             this.setInitialized();
+
+            const offset = -53;
+
+            this.setAnchorPoint('middle', offset);
+            this.drawAnchorPoint();
+            this.filters = [ReplaceAlphaFilter()];
         }
     }
 
     public needTweenUpdate(): boolean {
-        const test = super.needTweenUpdate();
-
-        if(!test) {
-            this.addTween(new TranslateTween(this, 2000, { positions: new Position3D(Math.random() * 1300 | 0, Math.random() * 700 | 0) }));
-        }
-
-        return true;
+        return false;
+        // const test = super.needTweenUpdate();
+        //
+        // if(!test) {
+        //     this.addTween(new TranslateTween(this, 2000, { positions: new Position3D(Math.random() * 1300 | 0, Math.random() * 700 | 0) }));
+        // }
+        //
+        // return true;
     }
 
     updateFrame() {
