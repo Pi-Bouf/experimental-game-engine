@@ -1,7 +1,8 @@
-import { ImageSource, Point, Sprite, Texture } from 'pixi.js';
+import { Graphics, ImageSource, Point, Sprite, Texture } from 'pixi.js';
 
 import { AssetTexture } from '../assets';
 import { IAssetsManager } from '../assets/interfaces/IAssetsManager';
+import { ReplaceAlphaFilter } from "../debug/filters/ReplaceAlphaFilter";
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { PRectangle } from '../geometry';
 import { IPosition3D } from '../geometry/interfaces/IPosition3D';
@@ -40,6 +41,8 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
         this.canBeHovered = true;
         this.clickable = false;
+
+        this.addChild(new Sprite(Texture.WHITE));
     }
 
     public needInitialization() {
@@ -48,6 +51,50 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
     public setInitialized(): void {
         this.initialized = true;
+    }
+
+    protected setAnchorPoint(xOffset: 'left' | 'right' | 'middle', yPxOffset: number) {
+        switch (xOffset) {
+            case 'left':
+                this.anchor.set(0, (this.height - yPxOffset) / this.height);
+                break;
+            case 'right':
+                this.anchor.set(1, (this.height - yPxOffset) / this.height);
+                break;
+            case 'middle':
+                this.anchor.set(0.5, (this.height - yPxOffset) / this.height);
+        }
+    }
+
+    public resetFilters() {
+        this.filters = [];
+    }
+
+    protected addDebugFilter() {
+        this.filters = [ReplaceAlphaFilter()];
+    }
+
+    protected drawAnchorPoint() {
+        const border = new Graphics()
+            .rect(-2, 0, 4, 4)
+            .fill({ color: 0x00ff00 });
+
+        this.addChild(border);
+    }
+
+    protected drawInnerBorder() {
+        const width = this.texture.width;
+        const height = this.texture.height;
+
+        const border = new Graphics()
+            .moveTo(1, 1)
+            .lineTo(width, 1)
+            .lineTo(width, height)
+            .lineTo(1, height)
+            .lineTo(1, 1)
+            .stroke({ color: 0x00ff00, pixelLine: true });
+
+        this.addChild(border);
     }
 
     public requestInitialization(): void {

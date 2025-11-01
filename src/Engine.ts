@@ -1,6 +1,6 @@
 import {
     AbstractRenderer, autoDetectRenderer, Container,
-    Renderer, Texture, TexturePool,
+    Renderer, Texture, TexturePool, TextureStyle,
     Ticker
 } from 'pixi.js';
 
@@ -21,7 +21,12 @@ export class Engine {
         private readonly options: IEngineOption,
     ) {
         AbstractRenderer.defaultOptions.resolution = 1;
+        // Needed for generated textures to be pixel perfect.
         TexturePool.textureOptions.scaleMode = 'nearest';
+        // Needed for all other textures to be pixel perfect.
+        TextureStyle.defaultOptions.scaleMode = 'nearest';
+
+        // Disable of fucking pixi tickers
         Ticker.shared.autoStart = false;
         Ticker.system.autoStart = false;
     }
