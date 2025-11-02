@@ -1,7 +1,6 @@
 import { Point, Texture } from 'pixi.js';
 
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { ReplaceAlphaFilter } from "../src/debug/filters/ReplaceAlphaFilter";
 import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
 import { AvatarPositionComputer } from './AvatarPositionComputer';
@@ -46,8 +45,8 @@ export class Avatar extends Graphic {
             const offset = -53;
 
             this.setAnchorPoint('middle', offset);
-            this.drawAnchorPoint();
-            this.filters = [ReplaceAlphaFilter()];
+            // this.drawAnchorPoint();
+            // this.filters = [ReplaceAlphaFilter()];
         }
     }
 

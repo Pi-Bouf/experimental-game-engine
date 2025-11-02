@@ -42,7 +42,7 @@ export abstract class Graphic extends Sprite implements IGraphic {
         this.canBeHovered = true;
         this.clickable = false;
 
-        this.addChild(new Sprite(Texture.WHITE));
+        // this.addChild(new Sprite(Texture.WHITE));
     }
 
     public needInitialization() {
@@ -53,7 +53,7 @@ export abstract class Graphic extends Sprite implements IGraphic {
         this.initialized = true;
     }
 
-    protected setAnchorPoint(xOffset: 'left' | 'right' | 'middle', yPxOffset: number) {
+    public setAnchorPoint(xOffset: 'left' | 'right' | 'middle', yPxOffset: number = 0) {
         switch (xOffset) {
             case 'left':
                 this.anchor.set(0, (this.height + yPxOffset) / this.height);
@@ -74,10 +74,10 @@ export abstract class Graphic extends Sprite implements IGraphic {
         this.filters = [ReplaceAlphaFilter()];
     }
 
-    protected drawAnchorPoint() {
+    public drawAnchorPoint(color: number = 0x00ff00) {
         const border = new Graphics()
             .rect(-2, 0, 4, 4)
-            .fill({ color: 0x00ff00 });
+            .fill({ color });
 
         this.addChild(border);
     }

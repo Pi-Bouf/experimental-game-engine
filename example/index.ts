@@ -3,6 +3,7 @@ import { Position3D } from "../src";
 import { Engine } from '../src/Engine';
 import { Avatar } from './Avatar';
 import { AvatarPositionComputer } from './AvatarPositionComputer';
+import { Effect } from "./Effect";
 import { Action } from './enum/Action';
 import { Direction } from './enum/Direction';
 
@@ -58,19 +59,24 @@ sandbox.init().then(() => {
         const randomAvatar = avatars[Math.random() * 3 | 0];
 
         const player = new Avatar(randomAvatar, randomAction, randomDirection);
-        player.setPosition3D(new Position3D(100, 100, 0));
+        player.setPosition3D(new Position3D(Math.random() * 1000, Math.random() * 800, 0));
         sandbox.stage.addChild(player);
 
         // const graphic = new GraphicDebugWhite();
-        //
+
         // sandbox.stage.addChild(graphic);
 
-        //
-        // const randomEffect = effects[Math.random() * 2 | 0];
-        //
-        // const effect = new Effect(randomEffect);
-        // effect.setPosition3D(new Position3D(32, 0));
-        // sandbox.stage.addChild(effect);
-        // effect.follow(player);
+
+        const randomEffect = effects[Math.random() * 2 | 0];
+
+        const effect = new Effect(randomEffect);
+
+        effect.setAnchorPoint('middle', 0);
+
+        sandbox.stage.addChild(effect);
+
+        player.drawAnchorPoint(0x123456);
+        effect.drawAnchorPoint();
+        effect.follow(player);
     }
 });
