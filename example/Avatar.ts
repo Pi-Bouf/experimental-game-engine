@@ -1,4 +1,4 @@
-import { Point, Texture } from 'pixi.js';
+import { Texture } from 'pixi.js';
 
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
 import { EventCategory } from '../src/sprite/enum/EventCategory';
@@ -21,8 +21,6 @@ export class Avatar extends Graphic {
 
         this.frameCount = 0;
         this.currentTextures = [];
-
-        // this.anchor.set(0.5, 1);
     }
 
     public initialize(resourceManager: IAssetsManager): void {
@@ -75,19 +73,6 @@ export class Avatar extends Graphic {
         // return false;
         return this.currentTextures.length > 1;
     }
-
-    updateTween(now: number) {
-        super.updateTween(now);
-    }
-
-    updatePosition(stageOffset: Point) {
-        super.updatePosition(stageOffset);
-    }
-
-    updateGraphicBounds() {
-        super.updateGraphicBounds();
-    }
-
 
     getEventCategory(): EventCategory {
         return EventCategory.FLOOR;

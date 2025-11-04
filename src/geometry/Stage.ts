@@ -22,7 +22,7 @@ export class Stage extends Container<IGraphic> implements IResetable {
         this.interactiveChildren = false;
 
         this.lastHoverTick = 0;
-        this.minHoverTick = 300;
+        this.minHoverTick = 30;
 
         this.inputManager = new InputManager();
         this.geometryManager = new GeometryManager(this);
@@ -31,17 +31,23 @@ export class Stage extends Container<IGraphic> implements IResetable {
     }
 
     public animationTick() {
-        this.children.forEach((child) => {
+        for(const child of this.children) {
+            if(child.disposed) {
+                this.removeChild(child);
+                continue;
+            }
+
             if (child.needInitialization()) {
                 child.initialize(this.engine.assetsManager);
-            } else {
-                child.checkGraphicBounds(this.geometryManager.stageBounds);
-
-                if (child.visible) {
-                    if (child.needFrameUpdate()) child.updateFrame();
-                }
+                continue;
             }
-        });
+
+            child.checkGraphicBounds(this.geometryManager.stageBounds);
+
+            if (!child.needFrameUpdate()) continue;
+
+            child.updateFrame();
+        }
     }
 
     public displayTick() {

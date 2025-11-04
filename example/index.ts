@@ -59,24 +59,33 @@ sandbox.init().then(() => {
         const randomAvatar = avatars[Math.random() * 3 | 0];
 
         const player = new Avatar(randomAvatar, randomAction, randomDirection);
-        player.setPosition3D(new Position3D(Math.random() * 1000, Math.random() * 800, 0));
+        player.setPosition3D(new Position3D(100, 100, 0));
         sandbox.stage.addChild(player);
 
         // const graphic = new GraphicDebugWhite();
 
         // sandbox.stage.addChild(graphic);
-
-
+        //
+        //
         const randomEffect = effects[Math.random() * 2 | 0];
 
         const effect = new Effect(randomEffect);
-
+        //
         effect.setAnchorPoint('middle', 0);
-
+        //
         sandbox.stage.addChild(effect);
-
-        player.drawAnchorPoint(0x123456);
-        effect.drawAnchorPoint();
+        //
+        // player.drawAnchorPoint(0x123456);
+        effect.drawAnchorPoint(0xFF0000);
         effect.follow(player);
     }
+
+    setInterval(() => {
+        const randomEffect = effects[Math.random() * 2 | 0];
+        const effect = new Effect(randomEffect);
+
+        effect.setPosition3D(new Position3D(Math.random() * 1300 | 0, Math.random() * 800 | 0));
+
+        sandbox.stage.addChild(effect);
+    }, 0);
 });

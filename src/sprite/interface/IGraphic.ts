@@ -7,6 +7,10 @@ import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
 import { EventCategory } from '../enum/EventCategory';
 
 export interface IGraphic extends Sprite {
+    disposed: boolean;
+    canBeHovered: boolean;
+    canBeClicked: boolean;
+
     needInitialization(): boolean;
     initialize(resourceManager: IAssetsManager): void;
     setInitialized(): void;

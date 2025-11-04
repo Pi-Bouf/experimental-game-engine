@@ -1,4 +1,4 @@
-import { Point, Rectangle, Texture } from 'pixi.js';
+import { Rectangle, Texture } from 'pixi.js';
 
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
 import { EventCategory } from '../src/sprite/enum/EventCategory';
@@ -14,7 +14,7 @@ export class Effect extends Graphic {
     ) {
         super(id);
 
-        this.frameCount = Math.random() * 13 | 0;
+        this.frameCount = 0;
         this.currentTextures = [];
     }
 
@@ -37,32 +37,19 @@ export class Effect extends Graphic {
     updateFrame() {
         this.frameCount++;
 
-        this.texture = this.currentTextures[this.frameCount % 13];
-
-        if (this.frameCount > 1000) {
-            this.frameCount = 0;
-        }
+        this.texture = this.currentTextures.shift();
     }
 
     needFrameUpdate(): boolean {
+        if(this.currentTextures.length === 0) {
+            this.dispose();
+        }
+
         // return false;
-        return this.currentTextures.length > 1;
+        return this.currentTextures.length > 0;
     }
-
-    updateTween(now: number) {
-        super.updateTween(now);
-    }
-
-    updatePosition(stageOffset: Point) {
-        super.updatePosition(stageOffset);
-    }
-
-    updateGraphicBounds() {
-        super.updateGraphicBounds();
-    }
-
 
     getEventCategory(): EventCategory {
-        return EventCategory.FLOOR;
+        return EventCategory.NONE;
     }
 }

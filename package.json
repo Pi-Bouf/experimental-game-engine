@@ -19,7 +19,7 @@
     "lint:fix": "eslint src --color --fix",
     "serve:assets": "http-server assets/images -d -i --cors -p 8081",
     "clean": "rm -rf .parcel-cache dist",
-    "check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "pixi.js": "^8.14.0"

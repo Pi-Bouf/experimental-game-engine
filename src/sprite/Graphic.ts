@@ -23,10 +23,11 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
     private followedGraphic: Graphic;
 
-    private canBeHovered: boolean;
-    private clickable: boolean;
+    private _disposed = false;
+    private _canBeHovered: boolean;
+    private _clickable: boolean;
 
-    constructor(id: string, texture: Texture = Texture.EMPTY) {
+    protected constructor(id: string, texture: Texture = Texture.EMPTY) {
         // (PIXI) By default, set an empty texture
         super(texture ?? Texture.EMPTY);
         // (PIXI) By default, the renderer don't need to display this shit !
@@ -39,10 +40,9 @@ export abstract class Graphic extends Sprite implements IGraphic {
         this.positionUpdated = true;
         this.frameUpdated = true;
 
-        this.canBeHovered = true;
-        this.clickable = false;
-
-        // this.addChild(new Sprite(Texture.WHITE));
+        this._disposed = false;
+        this._canBeHovered = true;
+        this._clickable = false;
     }
 
     public needInitialization() {
@@ -51,6 +51,11 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
     public setInitialized(): void {
         this.initialized = true;
+    }
+
+    public setScale(x: number = 1, y?: number): void {
+        this.scale.set(x, y ?? x);
+        this.updateGraphicBounds();
     }
 
     public setAnchorPoint(xOffset: 'left' | 'right' | 'middle', yPxOffset: number = 0) {
@@ -64,6 +69,8 @@ export abstract class Graphic extends Sprite implements IGraphic {
             case 'middle':
                 this.anchor.set(0.5, (this.height + yPxOffset) / this.height);
         }
+
+        this.updateGraphicBounds();
     }
 
     public resetFilters() {
@@ -180,7 +187,12 @@ export abstract class Graphic extends Sprite implements IGraphic {
     }
 
     public updateGraphicBounds(): void {
-        this.graphicBounds = new PRectangle(this.position.x, this.position.y, this.texture.width, this.texture.height);
+        this.graphicBounds = new PRectangle(
+            this.position.x - (this.anchor.x * (this.texture.width * this.scale.x)),
+            this.position.y - (this.anchor.y * (this.texture.height * this.scale.y)),
+            this.texture.width * this.scale.x,
+            this.texture.height * this.scale.y
+        );
     }
 
     public checkGraphicBounds(graphicBounds: PRectangle): void {
@@ -202,11 +214,16 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
         if (this.graphicBounds.width < 2 || this.graphicBounds.height < 2) return false;
 
-        // @ts-expect-error TODO fix that pls
         if (!this.texture.source.hitMap) this.generateHitMap();
 
-        const point = new Point((this.texture.frame.x + currentInputs.currentCursor.x - this.graphicBounds.x) | 0, (this.texture.frame.y + currentInputs.currentCursor.y - this.graphicBounds.y) | 0);
-        // @ts-expect-error TODO fix that pls
+        const localX = (currentInputs.currentCursor.x - this.graphicBounds.x) / this.scale.x;
+        const localY = (currentInputs.currentCursor.y - this.graphicBounds.y) / this.scale.y;
+
+        const point = new Point(
+            (this.texture.frame.x + localX) | 0,
+            (this.texture.frame.y + localY) | 0
+        );
+
         return this.texture.source.hitMap[point.y * this.texture.source.width + point.x] > 0;
     }
 
@@ -221,7 +238,6 @@ export abstract class Graphic extends Sprite implements IGraphic {
     protected generateHitMap(): void {
         const baseTex: ImageSource = this.texture.source;
 
-        // @ts-expect-error TODO fix that pls
         if (baseTex.hitMap !== undefined) return;
         if (!baseTex.resource) return;
 
@@ -247,7 +263,6 @@ export abstract class Graphic extends Sprite implements IGraphic {
             hitMap[i] = imageData.data[i * 4 + 3];
         }
 
-        // @ts-expect-error TODO fix that pls
         baseTex.hitMap = hitMap;
     }
 
@@ -256,5 +271,18 @@ export abstract class Graphic extends Sprite implements IGraphic {
     }
 
     public dispose(): void {
+        this._disposed = true;
+    }
+
+    public get disposed() {
+        return this._disposed;
+    }
+
+    public get canBeHovered() {
+        return true;
+    }
+
+    public get canBeClicked() {
+        return false;
     }
 }
