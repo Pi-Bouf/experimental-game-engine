@@ -1,7 +1,7 @@
 FROM node:22.21.1-alpine3.21 AS base
 WORKDIR /app
 COPY . /app
-ENV ASSETS_URL=/
+ENV ASSETS_URL=/images/
 RUN yarn install; yarn parcel build example/index.html
 
 FROM base AS server
