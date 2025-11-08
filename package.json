@@ -12,6 +12,11 @@
     ".": "./index.ts"
   },
   "type": "module",
+  "targets": {
+    "main": false,
+    "module": false,
+    "types": false
+  },
   "scripts": {
     "watch": "parcel example/index.html",
     "build": "tsc",
