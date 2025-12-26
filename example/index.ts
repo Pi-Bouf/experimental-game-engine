@@ -22,7 +22,7 @@ const sandbox = new Engine({
 });
 
 const urlParams = new URLSearchParams(window.location.search);
-const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')) : 100;
+const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')) : 1;
 
 sandbox.init().then(() => {
 
@@ -59,33 +59,37 @@ sandbox.init().then(() => {
         const randomAvatar = avatars[Math.random() * 3 | 0];
 
         const player = new Avatar(randomAvatar, randomAction, randomDirection);
-        player.setPosition3D(new Position3D(100, 100, 0));
+        player.setPosition(new Position3D(Math.random() * 1000 | 0, Math.random() * 1000, 0));
+
         sandbox.stage.addChild(player);
-
-        // const graphic = new GraphicDebugWhite();
-
-        // sandbox.stage.addChild(graphic);
+        // //
+        // // setInterval(() => {
+        // //     player.setPosition(new Position3D(Math.random() * 500 | 0, Math.random() * 500 | 0));
+        // // }, 1000);
         //
+        // // const graphic = new GraphicDebugWhite();
         //
+        // // sandbox.stage.addChild(graphic);
+        // //
+        // //
         const randomEffect = effects[Math.random() * 2 | 0];
-
+        
         const effect = new Effect(randomEffect);
-        //
-        effect.setAnchorPoint('middle', 0);
-        //
+    
+        // effect.setPosition(new Position3D(200, 100, 0));
         sandbox.stage.addChild(effect);
-        //
-        // player.drawAnchorPoint(0x123456);
-        effect.drawAnchorPoint(0xFF0000);
+        // //
+        // player.drawAnchorPoint();
+        // effect.drawAnchorPoint(0xFF0000);
         effect.follow(player);
     }
 
-    setInterval(() => {
-        const randomEffect = effects[Math.random() * 2 | 0];
-        const effect = new Effect(randomEffect);
-
-        effect.setPosition3D(new Position3D(Math.random() * 1300 | 0, Math.random() * 800 | 0));
-
-        sandbox.stage.addChild(effect);
-    }, 0);
+    // setInterval(() => {
+    //     const randomEffect = effects[Math.random() * 2 | 0];
+    //     const effect = new Effect(randomEffect);
+    //
+    //     effect.setPosition(new Position3D(Math.random() * 1300 | 0, Math.random() * 800 | 0));
+    //
+    //     sandbox.stage.addChild(effect.displayableObject);
+    // }, 0);
 });

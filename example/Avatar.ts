@@ -1,7 +1,6 @@
 import { Texture } from 'pixi.js';
 
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
 import { AvatarPositionComputer } from './AvatarPositionComputer';
 import { Action } from './enum/Action';
@@ -34,17 +33,13 @@ export class Avatar extends Graphic {
                 new Texture({ source: baseTexture, frame: AvatarPositionComputer.getPosition(this.action, this.direction)[3] }),
             ];
 
-            this.texture = this.currentTextures[0];
+            this.setTexture(this.currentTextures[0]);
 
             this.updateGraphicBounds();
 
             this.setInitialized();
 
-            const offset = -53;
-
-            this.setAnchorPoint('middle', offset);
-            // this.drawAnchorPoint();
-            // this.filters = [ReplaceAlphaFilter()];
+            this.setAnchor({ xOffset: "middle", yPxOffset: -53 });
         }
     }
 
@@ -61,9 +56,9 @@ export class Avatar extends Graphic {
 
     updateFrame() {
         this.frameCount++;
-
-        this.texture = this.currentTextures[this.frameCount % 4];
-
+        
+        this.setTexture(this.currentTextures[this.frameCount % 4]);
+        
         if (this.frameCount > 1000) {
             this.frameCount = 0;
         }
@@ -72,9 +67,5 @@ export class Avatar extends Graphic {
     needFrameUpdate(): boolean {
         // return false;
         return this.currentTextures.length > 1;
-    }
-
-    getEventCategory(): EventCategory {
-        return EventCategory.FLOOR;
     }
 }

@@ -4,9 +4,8 @@ import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
 import { PRectangle } from "../../geometry";
 import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
-import { EventCategory } from '../enum/EventCategory';
 
-export interface IGraphic extends Sprite {
+export interface IGraphic {
     disposed: boolean;
     canBeHovered: boolean;
     canBeClicked: boolean;
@@ -28,7 +27,7 @@ export interface IGraphic extends Sprite {
     updatePosition(point: Point): void;
     setPositionUpdated(): void;
     requestPositionUpdate(): void;
-    setPosition3D(position3D: IPosition3D): void;
+    setPosition(position: IPosition3D): void;
     getCurrentPosition(): IPosition3D;
 
     getGraphicBounds(): PRectangle;
@@ -37,7 +36,8 @@ export interface IGraphic extends Sprite {
 
     checkHover(currentInputs: ICurrentInputs): boolean;
     checkInput(currentInputs: ICurrentInputs): boolean;
-    getEventCategory(): EventCategory;
+
+    getDisplayableObject(): Sprite;
 
     dispose(): void;
 }

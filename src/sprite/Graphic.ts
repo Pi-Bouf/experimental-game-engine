@@ -7,91 +7,152 @@ import { ICurrentInputs } from '../events/interface/ICurrentInputs';
 import { PRectangle } from '../geometry';
 import { IPosition3D } from '../geometry/interfaces/IPosition3D';
 import { Position3D } from '../geometry/Position3D';
-import { EventCategory } from './enum/EventCategory';
 import { IGraphic } from './interface/IGraphic';
-import { ITween } from './tween/interface/ITween';
-import { Tween } from './tween/Tween';
+import { ITween, Tween } from "./tween";
 
-export abstract class Graphic extends Sprite implements IGraphic {
+export type AnchorOptions = { xOffset?: 'left' | 'right' | 'middle', yPxOffset?: number };
+export type ScaleOptions = { x?: number, y?: number };
+export type EventOptions = { canBeHovered?: boolean, canBeClicked?: boolean };
+export type GraphicOptions = { texture?: Texture, anchor?: AnchorOptions, scale?: ScaleOptions, position?: IPosition3D, event?: EventOptions };
+
+export abstract class Graphic implements IGraphic {
     protected id: string;
     private position3D: IPosition3D;
     private graphicBounds: PRectangle;
-    private initialized: boolean;
-    private positionUpdated: boolean;
-    private frameUpdated: boolean;
-    private tween: ITween;
 
-    private followedGraphic: Graphic;
+    private _followedGraphic: Graphic;
 
     private _disposed = false;
-    private _canBeHovered: boolean;
-    private _clickable: boolean;
 
-    protected constructor(id: string, texture: Texture = Texture.EMPTY) {
-        // (PIXI) By default, set an empty texture
-        super(texture ?? Texture.EMPTY);
-        // (PIXI) By default, the renderer don't need to display this shit !
-        this.visible = false;
+    private _sprite: Sprite;
+    private _tween: ITween;
+
+    private _canBeHovered: boolean;
+    private _canBeClicked: boolean;
+    private _initialized: boolean;
+    private _positionUpdated: boolean;
+    private _frameUpdated: boolean;
+
+    protected constructor(id: string, options?: GraphicOptions) {
+        // Default options
+        const defaultOptions = {
+            anchor: { xOffset: 'middle' as const, yPxOffset: 0 },
+            scale: { x: 1, y: 1 },
+            position: new Position3D(0, 0, 0),
+            event: { canBeHovered: false, canBeClicked: false }
+        };
+
+        // Merge provided options with defaults
+        const mergedOptions: GraphicOptions = {
+            texture: options?.texture,
+            anchor: options?.anchor ? { ...defaultOptions.anchor, ...options.anchor } : defaultOptions.anchor,
+            scale: options?.scale ? { ...defaultOptions.scale, ...options.scale } : defaultOptions.scale,
+            position: options?.position ?? defaultOptions.position,
+            event: options?.event ? { ...defaultOptions.event, ...options.event } : defaultOptions.event
+        };
 
         this.id = id;
-        this.position3D = new Position3D();
+        this.position3D = mergedOptions.position;
         this.graphicBounds = new PRectangle();
-        this.initialized = texture !== Texture.EMPTY;
-        this.positionUpdated = true;
-        this.frameUpdated = true;
 
+        this._sprite = new Sprite(mergedOptions.texture);
+        this._sprite.visible = false;
+
+        this.setVisible(false)
+            .setAnchor(mergedOptions.anchor)
+            .setScale(mergedOptions.scale)
+            .setPosition(mergedOptions.position)
+            .setEvent(mergedOptions.event);
+
+        // States
+        this._initialized = false;
+        this._positionUpdated = true;
+        this._frameUpdated = true;
+
+        // Events
         this._disposed = false;
-        this._canBeHovered = true;
-        this._clickable = false;
     }
 
     public needInitialization() {
-        return !this.initialized;
+        return !this._initialized;
     }
 
     public setInitialized(): void {
-        this.initialized = true;
+        this._initialized = true;
     }
 
-    public setScale(x: number = 1, y?: number): void {
-        this.scale.set(x, y ?? x);
+    public setScale({ x, y }: ScaleOptions = { x: 1, y: 1 }) {
+        this._sprite.scale.set(x, y ?? x);
+
         this.updateGraphicBounds();
+
+        return this;
     }
 
-    public setAnchorPoint(xOffset: 'left' | 'right' | 'middle', yPxOffset: number = 0) {
+    public setAnchor({ xOffset, yPxOffset }: AnchorOptions = { xOffset: 'middle', yPxOffset: 0 }) {
         switch (xOffset) {
             case 'left':
-                this.anchor.set(0, (this.height + yPxOffset) / this.height);
+                this._sprite.anchor.set(0, (this._sprite.height + yPxOffset) / this._sprite.height);
                 break;
             case 'right':
-                this.anchor.set(1, (this.height + yPxOffset) / this.height);
+                this._sprite.anchor.set(1, (this._sprite.height + yPxOffset) / this._sprite.height);
                 break;
             case 'middle':
-                this.anchor.set(0.5, (this.height + yPxOffset) / this.height);
+                this._sprite.anchor.set(0.5, (this._sprite.height + yPxOffset) / this._sprite.height);
         }
 
         this.updateGraphicBounds();
+
+        return this;
+    }
+
+    public setEvent(event: EventOptions = { canBeHovered: false, canBeClicked: false }) {
+        this._canBeHovered = event.canBeHovered;
+        this._canBeClicked = event.canBeClicked;
+
+        return this;
+    }
+
+    public setTexture(texture: Texture) {
+        if(!this._sprite) {
+            console.warn('Attempt to set a texture to a non existing sprite.', this.id);
+            return;
+        }
+
+        this._sprite.texture = texture;
+    }
+
+    public setVisible(visible: boolean) {
+        this._sprite.visible = visible;
+        return this;
     }
 
     public resetFilters() {
-        this.filters = [];
+        this._sprite.filters = [];
+
+        return this;
     }
 
     protected addDebugFilter() {
-        this.filters = [ReplaceAlphaFilter()];
+        this._sprite.filters = [ReplaceAlphaFilter()];
+
+        return this;
     }
 
+    /** @deprecated We can't add child to sprite */
     public drawAnchorPoint(color: number = 0x00ff00) {
-        const border = new Graphics()
+        const point = new Graphics()
             .rect(-2, 0, 4, 4)
             .fill({ color });
 
-        this.addChild(border);
+        this._sprite.addChild(point);
+
+        console.info('Display inner border', this.id);
     }
 
     protected drawInnerBorder() {
-        const width = this.texture.width;
-        const height = this.texture.height;
+        const width = this._sprite.texture.width;
+        const height = this._sprite.texture.height;
 
         const border = new Graphics()
             .moveTo(1, 1)
@@ -101,16 +162,19 @@ export abstract class Graphic extends Sprite implements IGraphic {
             .lineTo(1, 1)
             .stroke({ color: 0x00ff00, pixelLine: true });
 
-        this.addChild(border);
+        console.log('Display inner border', border);
+
+        // TODO to fix that
+        // this.addChild(border);
     }
 
     public requestInitialization(): void {
-        this.initialized = false;
+        this._initialized = false;
     }
 
     public initialize(resourceManager: IAssetsManager): void {
         if (resourceManager.has(this.id)) {
-            this.texture = resourceManager.get<AssetTexture>(this.id);
+            this._sprite.texture = resourceManager.get<AssetTexture>(this.id);
             this.updateGraphicBounds();
             // this.generateHitMap();
 
@@ -119,59 +183,63 @@ export abstract class Graphic extends Sprite implements IGraphic {
     }
 
     public needFrameUpdate(): boolean {
-        return !this.frameUpdated;
+        return !this._frameUpdated;
     }
 
     public setFrameUpdated(): void {
-        this.frameUpdated = true;
+        this._frameUpdated = true;
     }
 
     public requestFrameUpdate(): void {
-        this.frameUpdated = false;
+        this._frameUpdated = false;
     }
 
     public updateFrame(): void {
-        // Do nothing here, no need to update frame
-        // To do something you have to extend it :)
+        console.warn('Try to update frame on static graphic. Check you needFrameUpdate() function.');
         this.setFrameUpdated();
     }
 
     public needTweenUpdate(): boolean {
-        return this.tween !== undefined && !this.tween.complete;
+        return this._tween !== undefined && !this._tween.complete;
     }
 
     public updateTween(now: number): void {
-        this.tween.update(now);
+        this._tween.update(now);
     }
 
-    public addTween(tween: Tween) {
-        this.tween = tween;
+    public addTween(_tween: Tween) {
+        this._tween = _tween;
     }
 
     public setPositionUpdated(): void {
-        this.positionUpdated = true;
+        this._positionUpdated = true;
     }
 
     public requestPositionUpdate(): void {
-        this.positionUpdated = false;
+        this._positionUpdated = false;
     }
 
     public needPositionUpdate(): boolean {
-        return !this.positionUpdated || this.followedGraphic !== undefined;
+        return !this._positionUpdated || this._followedGraphic !== undefined;
     }
 
-    public setPosition3D(position3D: IPosition3D): void {
-        this.position3D = position3D;
+    public setPosition(position: IPosition3D = { x: 0, y: 0, z: 0 }) {
+        this.position3D = position;
+
         this.requestPositionUpdate();
+
+        return this;
     }
 
     public updatePosition(stageOffset: Point): void {
-        if(this.followedGraphic !== undefined) {
-            this.position.set(this.followedGraphic.position.x + this.position3D.x, this.followedGraphic.position.y + this.position3D.y);
-            this.zIndex = this.followedGraphic.position3D.z + this.position3D.z;
+        if(this._followedGraphic !== undefined) {
+            // TODO fix that
+            const followedPosition = this._followedGraphic.getCurrentPosition();
+            this._sprite.position.set(stageOffset.x +followedPosition.x + this.position3D.x, stageOffset.y + followedPosition.y + this.position3D.y);
+            this._sprite.zIndex = this._followedGraphic.position3D.z + this.position3D.z;
         } else {
-            this.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
-            this.zIndex = this.position3D.z;
+            this._sprite.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
+            this._sprite.zIndex = this.position3D.z;
         }
 
         this.setPositionUpdated();
@@ -186,25 +254,33 @@ export abstract class Graphic extends Sprite implements IGraphic {
         return this.graphicBounds;
     }
 
-    public updateGraphicBounds(): void {
+    public updateGraphicBounds() {
+        if(this._disposed) return this;
+        
         this.graphicBounds = new PRectangle(
-            this.position.x - (this.anchor.x * (this.texture.width * this.scale.x)),
-            this.position.y - (this.anchor.y * (this.texture.height * this.scale.y)),
-            this.texture.width * this.scale.x,
-            this.texture.height * this.scale.y
+            this._sprite.position.x - (this._sprite.anchor.x * (this._sprite.texture.width * this._sprite.scale.x)),
+            this._sprite.position.y - (this._sprite.anchor.y * (this._sprite.texture.height * this._sprite.scale.y)),
+            this._sprite.texture.width * this._sprite.scale.x,
+            this._sprite.texture.height * this._sprite.scale.y
         );
+
+        return this;
     }
 
     public checkGraphicBounds(graphicBounds: PRectangle): void {
-        this.visible = graphicBounds.intersects(this.graphicBounds);
+        this._sprite.visible = graphicBounds.intersects(this.graphicBounds);
     }
 
     public follow(graphic: Graphic) {
-        this.followedGraphic = graphic;
+        this._followedGraphic = graphic;
+
+        return this;
     }
 
     public unfollow() {
-        this.followedGraphic = undefined;
+        this._followedGraphic = undefined;
+
+        return this;
     }
 
     public checkInput(currentInputs: ICurrentInputs): boolean {
@@ -214,29 +290,29 @@ export abstract class Graphic extends Sprite implements IGraphic {
 
         if (this.graphicBounds.width < 2 || this.graphicBounds.height < 2) return false;
 
-        if (!this.texture.source.hitMap) this.generateHitMap();
+        if (!this._sprite.texture.source.hitMap) this.generateHitMap();
 
-        const localX = (currentInputs.currentCursor.x - this.graphicBounds.x) / this.scale.x;
-        const localY = (currentInputs.currentCursor.y - this.graphicBounds.y) / this.scale.y;
+        const localX = (currentInputs.currentCursor.x - this.graphicBounds.x) / this._sprite.scale.x;
+        const localY = (currentInputs.currentCursor.y - this.graphicBounds.y) / this._sprite.scale.y;
 
         const point = new Point(
-            (this.texture.frame.x + localX) | 0,
-            (this.texture.frame.y + localY) | 0
+            (this._sprite.texture.frame.x + localX) | 0,
+            (this._sprite.texture.frame.y + localY) | 0
         );
 
-        return this.texture.source.hitMap[point.y * this.texture.source.width + point.x] > 0;
+        return this._sprite.texture.source.hitMap[point.y * this._sprite.texture.source.width + point.x] > 0;
     }
 
     public checkHover(currentInputs: ICurrentInputs): boolean {
         if (!this.canBeHovered) return false;
 
-        if (!this.visible) return false;
+        if (!this._sprite.visible) return false;
 
         return this.checkInput(currentInputs);
     }
 
     protected generateHitMap(): void {
-        const baseTex: ImageSource = this.texture.source;
+        const baseTex: ImageSource = this._sprite.texture.source;
 
         if (baseTex.hitMap !== undefined) return;
         if (!baseTex.resource) return;
@@ -266,11 +342,8 @@ export abstract class Graphic extends Sprite implements IGraphic {
         baseTex.hitMap = hitMap;
     }
 
-    public getEventCategory(): EventCategory {
-        return EventCategory.NONE;
-    }
-
     public dispose(): void {
+        this._sprite.destroy();
         this._disposed = true;
     }
 
@@ -279,10 +352,14 @@ export abstract class Graphic extends Sprite implements IGraphic {
     }
 
     public get canBeHovered() {
-        return true;
+        return this._canBeHovered;
     }
 
     public get canBeClicked() {
-        return false;
+        return this._canBeClicked;
+    }
+
+    public getDisplayableObject() {
+        return this._sprite;
     }
 }

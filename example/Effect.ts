@@ -1,7 +1,6 @@
 import { Rectangle, Texture } from 'pixi.js';
 
 import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { EventCategory } from '../src/sprite/enum/EventCategory';
 import { Graphic } from '../src/sprite/Graphic';
 
 export class Effect extends Graphic {
@@ -16,6 +15,7 @@ export class Effect extends Graphic {
 
         this.frameCount = 0;
         this.currentTextures = [];
+
     }
 
     public initialize(resourceManager: IAssetsManager): void {
@@ -26,18 +26,24 @@ export class Effect extends Graphic {
                 this.currentTextures.push(new Texture({ source: baseTexture, frame: new Rectangle(i * 64, 0, 64, 64) }));
             }
 
-            this.texture = this.currentTextures[this.frameCount];
+            this.setTexture(this.currentTextures[this.frameCount]);
 
             this.updateGraphicBounds();
 
             this.setInitialized();
+
+            this.setAnchor({ xOffset: "middle", yPxOffset: -10 });
         }
     }
 
     updateFrame() {
         this.frameCount++;
 
-        this.texture = this.currentTextures.shift();
+        const nextTexture = this.currentTextures.shift();
+
+        if(nextTexture) {
+            this.setTexture(nextTexture);
+        }
     }
 
     needFrameUpdate(): boolean {
@@ -47,9 +53,5 @@ export class Effect extends Graphic {
 
         // return false;
         return this.currentTextures.length > 0;
-    }
-
-    getEventCategory(): EventCategory {
-        return EventCategory.NONE;
     }
 }
