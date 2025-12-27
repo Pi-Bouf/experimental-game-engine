@@ -231,14 +231,14 @@ export abstract class Graphic implements IGraphic {
         return this;
     }
 
-    public updatePosition(stageOffset: Point): void {
+    public updatePosition(): void {
         if(this._followedGraphic !== undefined) {
             // TODO fix that
             const followedPosition = this._followedGraphic.getCurrentPosition();
-            this._sprite.position.set(stageOffset.x +followedPosition.x + this.position3D.x, stageOffset.y + followedPosition.y + this.position3D.y);
+            this._sprite.position.set(followedPosition.x + this.position3D.x | 0, followedPosition.y + this.position3D.y | 0);
             this._sprite.zIndex = this._followedGraphic.position3D.z + this.position3D.z;
         } else {
-            this._sprite.position.set(stageOffset.x + this.position3D.x, stageOffset.y + this.position3D.y);
+            this._sprite.position.set(this.position3D.x | 0, this.position3D.y | 0);
             this._sprite.zIndex = this.position3D.z;
         }
 
@@ -268,7 +268,7 @@ export abstract class Graphic implements IGraphic {
     }
 
     public checkGraphicBounds(graphicBounds: PRectangle): void {
-        this._sprite.visible = graphicBounds.intersects(this.graphicBounds);
+        this._sprite.visible = true;
     }
 
     public follow(graphic: Graphic) {

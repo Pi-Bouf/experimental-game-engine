@@ -1,34 +1,51 @@
-import { Container, Sprite } from 'pixi.js';
+import { Container } from "pixi.js";
+import { Viewport } from 'pixi-viewport';
 
 import { Engine } from '../Engine';
-import { ICurrentInputs, InputManager } from '../events';
 import { IResetable } from '../interfaces/IResetable';
 import { IGraphic } from '../sprite';
-import { GeometryManager } from './GeometryManager';
+import { PRectangle } from "./PRectangle";
 
 export class Stage implements IResetable {
     private children: IGraphic[];
-    private _container: Container<Sprite>;
+    private _container: Container<any>;
+    private _viewport: Viewport;
 
-    private inputManager: InputManager;
-    private geometryManager: GeometryManager;
+    // private inputManager: InputManager;
 
     private lastHoverTick: number;
     private minHoverTick: number;
+    private lastDisplayTick: number;
 
     constructor(public engine: Engine) {
         this.children = [];
-        this._container = new Container({ isRenderGroup: false, interactive: false, interactiveChildren: false, sortableChildren: true });
+        this._container = new Container();
 
-        this._container.removeChild();
-
-        this.inputManager = new InputManager();
-        this.geometryManager = new GeometryManager(this);
+        // this.inputManager = new InputManager();
 
         this.lastHoverTick = 0;
         this.minHoverTick = 30;
+        this.lastDisplayTick = 0;
+    }
 
-        this.geometryManager.checkStageSize();
+    public initViewport() {
+        const screenWidth = this.engine.renderer.width;
+        const screenHeight = this.engine.renderer.height;
+
+        this._viewport = new Viewport({
+            worldWidth: screenWidth,
+            worldHeight: screenHeight,
+            events: this.engine.renderer.events,
+            passiveWheel: false,
+        });
+
+        this._viewport.drag({
+            pressDrag: true
+        });
+
+        this._viewport.center.set(screenWidth / 2, screenHeight / 2);
+
+        this._container.addChild(this._viewport);
     }
 
     public animationTick() {
@@ -42,7 +59,7 @@ export class Stage implements IResetable {
                 continue;
             }
 
-            child.checkGraphicBounds(this.geometryManager.stageBounds);
+            child.checkGraphicBounds(new PRectangle());
 
             if (!child.needFrameUpdate()) continue;
 
@@ -53,22 +70,17 @@ export class Stage implements IResetable {
     public displayTick() {
         const now = performance.now();
 
-        const currentInputs: ICurrentInputs = this.inputManager.getCurrentInputs();
-
-        this.geometryManager.update(currentInputs);
-
-        if (this.geometryManager.needSizeUpdate) {
-            this.engine.renderer.resize(this.geometryManager.stageBounds.width, this.geometryManager.stageBounds.height);
-        }
-
+        const elapsedTime = this.lastDisplayTick === 0 ? 0 : now - this.lastDisplayTick;
+        this.lastDisplayTick = now;
+        
         for(const child of this.children) {
             if(child.disposed) {
                 this.removeChild(child);
                 continue;
             }
-            
-            if (child.needPositionUpdate() || this.geometryManager.needPositionUpdate) {
-                child.updatePosition(this.geometryManager.stageOffset);
+
+            if (child.needPositionUpdate()) {
+                child.updatePosition();
             }
 
             if (child.needTweenUpdate()) child.updateTween(now);
@@ -76,10 +88,11 @@ export class Stage implements IResetable {
 
         // this.checkHovered(now, currentInputs);
 
-        this.inputManager.flush();
-        this.geometryManager.flush();
+        // this.inputManager.flush();
 
-        // console.log(this.container.children);
+        // Update viewport with elapsed time
+        this._viewport.update(elapsedTime);
+        
         this.engine.renderer.render(this._container);
     }
 
@@ -102,20 +115,20 @@ export class Stage implements IResetable {
 
     public addChild(child: IGraphic) {
         this.children.push(child);
-        this._container.addChild(child.getDisplayableObject());
+        this._viewport.addChild(child.getDisplayableObject());
     }
 
     public removeChild(child: IGraphic) {
         this.children.splice(this.children.indexOf(child), 1);
-        this._container.removeChild(child.getDisplayableObject());
+        this._viewport.removeChild(child.getDisplayableObject());
     }
 
     public reset() {
         this.children.forEach(child => child.dispose());
-        this._container.removeChildren();
+        this._viewport.removeChildren();
     }
 
-    public get container(){
-        return this._container;
+    public get viewport() {
+        return this._viewport;
     }
 }

@@ -1,4 +1,4 @@
-import { Point, Sprite } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 
 import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
@@ -24,7 +24,7 @@ export interface IGraphic {
     updateTween(now: number): void;
 
     needPositionUpdate(): boolean;
-    updatePosition(point: Point): void;
+    updatePosition(): void;
     setPositionUpdated(): void;
     requestPositionUpdate(): void;
     setPosition(position: IPosition3D): void;
