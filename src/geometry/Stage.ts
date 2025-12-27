@@ -1,4 +1,5 @@
 import { Container, Sprite } from 'pixi.js';
+import { Viewport } from 'pixi-viewport';
 
 import { Engine } from '../Engine';
 import { ICurrentInputs, InputManager } from '../events';
@@ -9,6 +10,7 @@ import { GeometryManager } from './GeometryManager';
 export class Stage implements IResetable {
     private children: IGraphic[];
     private _container: Container<Sprite>;
+    private _viewport: Viewport;
 
     private inputManager: InputManager;
     private geometryManager: GeometryManager;
@@ -22,6 +24,9 @@ export class Stage implements IResetable {
 
         this._container.removeChild();
 
+        // Viewport will be initialized in initViewport() after renderer is ready
+        this._viewport = null as any;
+
         this.inputManager = new InputManager();
         this.geometryManager = new GeometryManager(this);
 
@@ -29,6 +34,30 @@ export class Stage implements IResetable {
         this.minHoverTick = 30;
 
         this.geometryManager.checkStageSize();
+    }
+
+    public initViewport() {
+        // Initialize viewport after renderer is available
+        const screenWidth = this.engine.renderer.width;
+        const screenHeight = this.engine.renderer.height;
+        
+        this._viewport = new Viewport({
+            screenWidth,
+            screenHeight,
+            worldWidth: screenWidth,
+            worldHeight: screenHeight,
+            events: this.engine.renderer.events,
+        });
+
+        // Add container to viewport
+        this._viewport.addChild(this._container);
+
+        // Activate viewport plugins (optional - customize as needed)
+        this._viewport
+            .drag()
+            .pinch()
+            .wheel()
+            .decelerate();
     }
 
     public animationTick() {
@@ -59,6 +88,9 @@ export class Stage implements IResetable {
 
         if (this.geometryManager.needSizeUpdate) {
             this.engine.renderer.resize(this.geometryManager.stageBounds.width, this.geometryManager.stageBounds.height);
+            // Update viewport screen size when renderer is resized
+            this._viewport.screenWidth = this.geometryManager.stageBounds.width;
+            this._viewport.screenHeight = this.geometryManager.stageBounds.height;
         }
 
         for(const child of this.children) {
@@ -80,7 +112,7 @@ export class Stage implements IResetable {
         this.geometryManager.flush();
 
         // console.log(this.container.children);
-        this.engine.renderer.render(this._container);
+        this.engine.renderer.render(this._viewport);
     }
 
     private checkHovered(/*now: number, currentInputs: ICurrentInputs*/) {
@@ -117,5 +149,9 @@ export class Stage implements IResetable {
 
     public get container(){
         return this._container;
+    }
+
+    public get viewport(){
+        return this._viewport;
     }
 }

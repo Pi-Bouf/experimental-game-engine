@@ -82,6 +82,8 @@ sandbox.init().then(() => {
         // player.drawAnchorPoint();
         // effect.drawAnchorPoint(0xFF0000);
         effect.follow(player);
+
+        sandbox.stage.viewport.follow(player.getDisplayableObject());
     }
 
     // setInterval(() => {

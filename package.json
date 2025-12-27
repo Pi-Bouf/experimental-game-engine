@@ -27,6 +27,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "pixi-viewport": "^6.0.3",
     "pixi.js": "^8.14.3"
   },
   "devDependencies": {

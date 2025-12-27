@@ -58,6 +58,7 @@ export class Engine {
         this.canvasContainer.append(this.renderer.canvas);
 
         this.stage = new Stage(this);
+        this.stage.initViewport();
         this.ticker = new DoubleTicker(this.options.maxAnimationRate, this.options.maxDisplayRate);
         this.ticker.attachCallbacks(() => this.stage.animationTick(), () => {
             if(this.externalLoopCallback) { this.externalLoopCallback(); }
