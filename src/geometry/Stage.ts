@@ -41,7 +41,7 @@ export class Stage implements IResetable {
 
         this._viewport.drag({
             pressDrag: true
-        });
+        }).decelerate();
 
         this._viewport.center.set(screenWidth / 2, screenHeight / 2);
 

@@ -3,6 +3,7 @@ import { Graphic, Position3D } from "../src";
 import { Engine } from '../src';
 import { Avatar } from './Avatar';
 import { AvatarPositionComputer } from './AvatarPositionComputer';
+import { Effect } from "./Effect";
 import { Action } from './enum/Action';
 import { Direction } from './enum/Direction';
 
@@ -21,7 +22,7 @@ const sandbox = new Engine({
 });
 
 const urlParams = new URLSearchParams(window.location.search);
-const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')) : 1;
+const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')) : 100;
 
 sandbox.init().then(() => {
 
@@ -65,28 +66,28 @@ sandbox.init().then(() => {
         players.push(player);
 
         sandbox.stage.addChild(player);
+        //
+        // setInterval(() => {
+        //     player.setPosition(new Position3D(Math.random() * 500 | 0, Math.random() * 500 | 0));
+        // }, 1000);
+
+        // const graphic = new GraphicDebugWhite();
+
+        // sandbox.stage.addChild(graphic);
+        //
+        //
+        const randomEffect = effects[Math.random() * 2 | 0];
+
+        const effect = new Effect(randomEffect);
+
+        // effect.setPosition(new Position3D(200, 100, 0));
+        sandbox.stage.addChild(effect);
         // //
-        // // setInterval(() => {
-        // //     player.setPosition(new Position3D(Math.random() * 500 | 0, Math.random() * 500 | 0));
-        // // }, 1000);
-        //
-        // // const graphic = new GraphicDebugWhite();
-        //
-        // // sandbox.stage.addChild(graphic);
-        // //
-        // //
-        // const randomEffect = effects[Math.random() * 2 | 0];
-        //
-        // const effect = new Effect(randomEffect);
-        //
-        // // effect.setPosition(new Position3D(200, 100, 0));
-        // sandbox.stage.addChild(effect);
-        // // //
-        // // player.drawAnchorPoint();
-        // // effect.drawAnchorPoint(0xFF0000);
-        // effect.follow(player);
-        //
-        // sandbox.stage.viewport.follow(player.getDisplayableObject());
+        // player.drawAnchorPoint();
+        // effect.drawAnchorPoint(0xFF0000);
+        effect.follow(player);
+
+        sandbox.stage.viewport.follow(player.getDisplayableObject());
     }
 
     const playerMoving = players[0];
