@@ -64,7 +64,8 @@ export class Avatar extends Graphic {
         }
     }
 
-    needFrameUpdate(): boolean {
+    needFrameUpdate(now: number): boolean {
+        if(!super.needFrameUpdate(now)) return false;
         // return false;
         return this.currentTextures.length > 1;
     }

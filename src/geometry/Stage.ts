@@ -11,11 +11,12 @@ export class Stage implements IResetable {
     private _container: Container<any>;
     private _viewport: Viewport;
 
-    // private inputManager: InputManager;
-
     private lastHoverTick: number;
     private minHoverTick: number;
-    private lastDisplayTick: number;
+
+    private _animationFps: number;
+    private _animationFpsInterval: number;
+    private _lastAnimationTime: number;
 
     constructor(public engine: Engine) {
         this.children = [];
@@ -25,7 +26,11 @@ export class Stage implements IResetable {
 
         this.lastHoverTick = 0;
         this.minHoverTick = 30;
-        this.lastDisplayTick = 0;
+
+        this._animationFps = 25;
+        this._animationFpsInterval = 1000 / this._animationFps;
+
+        this._lastAnimationTime = 0;
     }
 
     public initViewport() {
@@ -46,9 +51,25 @@ export class Stage implements IResetable {
         this._viewport.center.set(screenWidth / 2, screenHeight / 2);
 
         this._container.addChild(this._viewport);
+
+        setTimeout(() => {
+            console.log(this._viewport.worldWidth, this._viewport.position.x);
+        }, 3000);
     }
 
-    public animationTick() {
+    public update(delta: number) {
+        const now = performance.now();
+
+        if(now - this._lastAnimationTime >=  this._animationFpsInterval ) {
+            this.animationTick(now);
+
+            this._lastAnimationTime = now;
+        }
+
+        this.displayTick(delta);
+    }
+
+    public animationTick(now: number) {
         for(const child of this.children) {
             if(child.disposed) {
                 continue;
@@ -61,17 +82,14 @@ export class Stage implements IResetable {
 
             child.checkGraphicBounds(new PRectangle());
 
-            if (!child.needFrameUpdate()) continue;
+            if (!child.needFrameUpdate(now)) continue;
 
             child.updateFrame();
         }
     }
 
-    public displayTick() {
+    public displayTick(delta: number) {
         const now = performance.now();
-
-        const elapsedTime = this.lastDisplayTick === 0 ? 0 : now - this.lastDisplayTick;
-        this.lastDisplayTick = now;
         
         for(const child of this.children) {
             if(child.disposed) {
@@ -91,7 +109,7 @@ export class Stage implements IResetable {
         // this.inputManager.flush();
 
         // Update viewport with elapsed time
-        this._viewport.update(elapsedTime);
+        this._viewport.update(delta);
         
         this.engine.renderer.render(this._container);
     }
