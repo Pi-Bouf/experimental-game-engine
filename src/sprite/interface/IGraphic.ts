@@ -15,10 +15,8 @@ export interface IGraphic {
     setInitialized(): void;
     requestInitialization(): void;
 
-    needFrameUpdate(): boolean;
+    needFrameUpdate(now: number): boolean;
     updateFrame(): void;
-    setFrameUpdated(): void;
-    requestFrameUpdate(): void;
 
     needTweenUpdate(): boolean;
     updateTween(now: number): void;

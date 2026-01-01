@@ -13,7 +13,8 @@ import { ITween, Tween } from "./tween";
 export type AnchorOptions = { xOffset?: 'left' | 'right' | 'middle', yPxOffset?: number };
 export type ScaleOptions = { x?: number, y?: number };
 export type EventOptions = { canBeHovered?: boolean, canBeClicked?: boolean };
-export type GraphicOptions = { texture?: Texture, anchor?: AnchorOptions, scale?: ScaleOptions, position?: IPosition3D, event?: EventOptions };
+export type AnimationOptions = { fps?: number };
+export type GraphicOptions = { texture?: Texture, anchor?: AnchorOptions, scale?: ScaleOptions, position?: IPosition3D, event?: EventOptions, animation?: AnimationOptions };
 
 export abstract class Graphic implements IGraphic {
     protected id: string;
@@ -27,6 +28,10 @@ export abstract class Graphic implements IGraphic {
     private _sprite: Sprite;
     private _tween: ITween;
 
+    private _animationFps: number;
+    private _animationFpsInterval: number;
+    private _lastAnimationTime: number;
+
     private _canBeHovered: boolean;
     private _canBeClicked: boolean;
     private _initialized: boolean;
@@ -35,11 +40,12 @@ export abstract class Graphic implements IGraphic {
 
     protected constructor(id: string, options?: GraphicOptions) {
         // Default options
-        const defaultOptions = {
+        const defaultOptions: GraphicOptions = {
             anchor: { xOffset: 'middle' as const, yPxOffset: 0 },
             scale: { x: 1, y: 1 },
             position: new Position3D(0, 0, 0),
-            event: { canBeHovered: false, canBeClicked: false }
+            event: { canBeHovered: false, canBeClicked: false },
+            animation: { fps: 10 }
         };
 
         // Merge provided options with defaults
@@ -48,7 +54,8 @@ export abstract class Graphic implements IGraphic {
             anchor: options?.anchor ? { ...defaultOptions.anchor, ...options.anchor } : defaultOptions.anchor,
             scale: options?.scale ? { ...defaultOptions.scale, ...options.scale } : defaultOptions.scale,
             position: options?.position ?? defaultOptions.position,
-            event: options?.event ? { ...defaultOptions.event, ...options.event } : defaultOptions.event
+            event: options?.event ? { ...defaultOptions.event, ...options.event } : defaultOptions.event,
+            animation: options?.animation ? { ...defaultOptions.animation, ...options.animation } : defaultOptions.animation,
         };
 
         this.id = id;
@@ -62,7 +69,8 @@ export abstract class Graphic implements IGraphic {
             .setAnchor(mergedOptions.anchor)
             .setScale(mergedOptions.scale)
             .setPosition(mergedOptions.position)
-            .setEvent(mergedOptions.event);
+            .setEvent(mergedOptions.event)
+            .setAnimationFps(mergedOptions.animation.fps);
 
         // States
         this._initialized = false;
@@ -109,6 +117,13 @@ export abstract class Graphic implements IGraphic {
     public setEvent(event: EventOptions = { canBeHovered: false, canBeClicked: false }) {
         this._canBeHovered = event.canBeHovered;
         this._canBeClicked = event.canBeClicked;
+
+        return this;
+    }
+
+    public setAnimationFps(fps: number) {
+        this._animationFps = fps;
+        this._animationFpsInterval = 1000 / fps;
 
         return this;
     }
@@ -182,21 +197,18 @@ export abstract class Graphic implements IGraphic {
         }
     }
 
-    public needFrameUpdate(): boolean {
-        return !this._frameUpdated;
-    }
+    public needFrameUpdate(now: number): boolean {
+        if(now - this._lastAnimationTime < this._animationFpsInterval) {
+            return false;
+        }
 
-    public setFrameUpdated(): void {
-        this._frameUpdated = true;
-    }
+        this._lastAnimationTime = now;
 
-    public requestFrameUpdate(): void {
-        this._frameUpdated = false;
+        return true;
     }
 
     public updateFrame(): void {
         console.warn('Try to update frame on static graphic. Check you needFrameUpdate() function.');
-        this.setFrameUpdated();
     }
 
     public needTweenUpdate(): boolean {
@@ -268,6 +280,7 @@ export abstract class Graphic implements IGraphic {
     }
 
     public checkGraphicBounds(graphicBounds: PRectangle): void {
+        // TODO fix this
         this._sprite.visible = true;
     }
 

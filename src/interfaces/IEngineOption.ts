@@ -6,9 +6,9 @@ export interface IEngineOption {
     height: number,
     autoResize: boolean,
     backgroundAlpha: number,
-    maxAnimationRate: number,
-    maxDisplayRate: number,
+    targetFps: number,
     mouseEventFrequency: number,
+    inspector?: boolean,
     images: {
         imageDomain: string,
         baseFiles?: string[]

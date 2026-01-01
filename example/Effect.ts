@@ -47,11 +47,12 @@ export class Effect extends Graphic {
     }
 
     needFrameUpdate(): boolean {
+        if(!super.needFrameUpdate()) return false;
+
         if(this.currentTextures.length === 0) {
             this.dispose();
         }
 
-        // return false;
         return this.currentTextures.length > 0;
     }
 }
