@@ -30,7 +30,7 @@ export interface IGraphic {
 
     getGraphicBounds(): PRectangle;
     updateGraphicBounds(): void;
-    checkGraphicBounds(graphicBounds: PRectangle): void;
+    checkGraphicBounds(screenBounds: PRectangle): void;
 
     checkHover(currentInputs: ICurrentInputs): boolean;
     checkInput(currentInputs: ICurrentInputs): boolean;

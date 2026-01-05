@@ -14,7 +14,8 @@ const sandbox = new Engine({
     backgroundAlpha: 0,
     mouseEventFrequency: 10000,
     autoResize: true,
-    targetFps: 60,
+    targetFps: 140,
+    maxAnimationRate: 20,
     inspector: false,
     images: {
         imageDomain: process.env.ASSETS_URL ?? 'http://127.0.0.1:8081/',
@@ -22,7 +23,7 @@ const sandbox = new Engine({
 });
 
 const urlParams = new URLSearchParams(window.location.search);
-const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')) : 100;
+const avatarCount = urlParams.get('avatarCount') ? parseInt(urlParams.get('avatarCount')!) : 100;
 
 sandbox.init().then(() => {
 
@@ -53,7 +54,7 @@ sandbox.init().then(() => {
 
     console.log(`Creating ${avatarCount} avatars`);
 
-    const players = [];
+    const players: Avatar[] = [];
 
     for (let i = 0; i < avatarCount; i++) {
         const randomDirection = direction[Math.random() * 4 | 0];
@@ -109,7 +110,7 @@ sandbox.init().then(() => {
             if (angle > Math.PI * 2) {
                 angle -= Math.PI * 2;
             }
-        }, 10); // ~60 FPS
+        }, 40); // ~60 FPS
 
         // Return the interval ID so you can stop it later with clearInterval(interval)
         return interval;

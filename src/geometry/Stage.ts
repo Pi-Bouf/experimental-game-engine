@@ -1,10 +1,12 @@
-import { Container } from "pixi.js";
+import { ColorMatrixFilter, Container } from "pixi.js";
 import { Viewport } from 'pixi-viewport';
 
 import { Engine } from '../Engine';
 import { IResetable } from '../interfaces/IResetable';
 import { IGraphic } from '../sprite';
 import { PRectangle } from "./PRectangle";
+import { ReplaceAlphaFilter } from "debug/filters/ReplaceAlphaFilter";
+import { RedBackgroundFilter } from "debug/filters/RedBackgroundFilter";
 
 export class Stage implements IResetable {
     private children: IGraphic[];
@@ -18,7 +20,7 @@ export class Stage implements IResetable {
     private _animationFpsInterval: number;
     private _lastAnimationTime: number;
 
-    constructor(public engine: Engine) {
+    constructor(public engine: Engine, maxAnimationRate: number = 25) {
         this.children = [];
         this._container = new Container();
 
@@ -27,7 +29,7 @@ export class Stage implements IResetable {
         this.lastHoverTick = 0;
         this.minHoverTick = 30;
 
-        this._animationFps = 25;
+        this._animationFps = maxAnimationRate;
         this._animationFpsInterval = 1000 / this._animationFps;
 
         this._lastAnimationTime = 0;
@@ -44,17 +46,15 @@ export class Stage implements IResetable {
             passiveWheel: false,
         });
 
+        this._viewport.filters = [RedBackgroundFilter()]
+
         this._viewport.drag({
             pressDrag: true
         }).decelerate();
 
-        this._viewport.center.set(screenWidth / 2, screenHeight / 2);
+      
 
         this._container.addChild(this._viewport);
-
-        setTimeout(() => {
-            console.log(this._viewport.worldWidth, this._viewport.position.x);
-        }, 3000);
     }
 
     public update(delta: number) {
@@ -80,7 +80,9 @@ export class Stage implements IResetable {
                 continue;
             }
 
-            child.checkGraphicBounds(new PRectangle());
+            // console.log(this._viewport.getGlobalPosition());
+
+            child.checkGraphicBounds(new PRectangle(this._viewport.position.x, this._viewport.position.y, this.engine.renderer.width, this.engine.renderer.height));
 
             if (!child.needFrameUpdate(now)) continue;
 
@@ -90,7 +92,7 @@ export class Stage implements IResetable {
 
     public displayTick(delta: number) {
         const now = performance.now();
-        
+
         for(const child of this.children) {
             if(child.disposed) {
                 this.removeChild(child);

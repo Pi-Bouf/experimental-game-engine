@@ -28,7 +28,7 @@ export class Engine {
 
         this.assetsManager = this.options.assetsManager ?? new AssetsManager(this.options.images.imageDomain);
 
-        this.stage = new Stage(this);
+        this.stage = new Stage(this, this.options.maxAnimationRate);
 
         this.ticker = new GameTicker();
         this.ticker.setFps(options.targetFps ?? 60)
@@ -54,6 +54,7 @@ export class Engine {
             backgroundAlpha: this.options.backgroundAlpha,
             antialias: false,
             roundPixels: true,
+            resolution: window.devicePixelRatio,
         });
 
         this.canvasContainer = this.options.canvasContainer;
