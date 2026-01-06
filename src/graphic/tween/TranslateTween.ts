@@ -23,7 +23,7 @@ export class TranslateTween extends Tween {
         const delta = (percent - this.lastPercent);
 
         if (this.differentialData.positions !== undefined) {
-            this.graphic.setPosition3D({
+            this.graphic.setPosition({
                 x: this.graphic.getCurrentPosition().x + (this.differentialData.positions.x * delta) | 0,
                 y: this.graphic.getCurrentPosition().y + (this.differentialData.positions.y * delta) | 0,
                 z: this.graphic.getCurrentPosition().z + (this.differentialData.positions.z * delta),

@@ -1,7 +1,6 @@
 import { Texture } from 'pixi.js';
 
-import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { Graphic } from '../src/sprite/Graphic';
+import { Graphic, IAssetsManager } from "../src";
 import { AvatarPositionComputer } from './AvatarPositionComputer';
 import { Action } from './enum/Action';
 import { Direction } from './enum/Direction';
@@ -64,7 +63,8 @@ export class Avatar extends Graphic {
         }
     }
 
-    needFrameUpdate(): boolean {
+    needFrameUpdate(now: number): boolean {
+        if(!super.needFrameUpdate(now)) return false;
         // return false;
         return this.currentTextures.length > 1;
     }
