@@ -45,8 +45,8 @@ export class Effect extends Graphic {
         }
     }
 
-    needFrameUpdate(): boolean {
-        if(!super.needFrameUpdate()) return false;
+    needFrameUpdate(now: number): boolean {
+        if(!super.needFrameUpdate(now)) return false;
 
         if(this.currentTextures.length === 0) {
             this.dispose();
