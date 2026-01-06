@@ -2,13 +2,15 @@ import { Sprite } from 'pixi.js';
 
 import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
-import { PRectangle } from "../../geometry";
+import { ProxyRectangle } from "../../geometry";
 import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
 
 export interface IGraphic {
     disposed: boolean;
     canBeHovered: boolean;
     canBeClicked: boolean;
+
+    alpha: number;
 
     needInitialization(): boolean;
     initialize(resourceManager: IAssetsManager): void;
@@ -28,9 +30,9 @@ export interface IGraphic {
     setPosition(position: IPosition3D): void;
     getCurrentPosition(): IPosition3D;
 
-    getGraphicBounds(): PRectangle;
+    getGraphicBounds(): ProxyRectangle;
     updateGraphicBounds(): void;
-    checkGraphicBounds(screenBounds: PRectangle): void;
+    checkGraphicBounds(screenBounds: ProxyRectangle): void;
 
     checkHover(currentInputs: ICurrentInputs): boolean;
     checkInput(currentInputs: ICurrentInputs): boolean;

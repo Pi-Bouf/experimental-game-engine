@@ -1,7 +1,7 @@
 import { Container } from 'pixi.js';
 
 
-export class PixiInspector {
+export class Inspector {
 
     private container: Container;
     private mainBoxStyle: string;

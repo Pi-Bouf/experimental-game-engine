@@ -4,9 +4,7 @@ import { AssetTexture } from '../assets';
 import { IAssetsManager } from '../assets/interfaces/IAssetsManager';
 import { ReplaceAlphaFilter } from "../debug/filters/ReplaceAlphaFilter";
 import { ICurrentInputs } from '../events/interface/ICurrentInputs';
-import { PRectangle } from '../geometry';
-import { IPosition3D } from '../geometry/interfaces/IPosition3D';
-import { Position3D } from '../geometry/Position3D';
+import { IPosition3D, Position3D, ProxyRectangle } from "../scene";
 import { IGraphic } from './interface/IGraphic';
 import { ITween, Tween } from "./tween";
 
@@ -19,7 +17,7 @@ export type GraphicOptions = { texture?: Texture, anchor?: AnchorOptions, scale?
 export abstract class Graphic implements IGraphic {
     protected id: string;
     private position3D: IPosition3D;
-    private graphicBounds: PRectangle;
+    private graphicBounds: ProxyRectangle;
 
     private _followedGraphic: Graphic;
 
@@ -60,7 +58,7 @@ export abstract class Graphic implements IGraphic {
 
         this.id = id;
         this.position3D = mergedOptions.position;
-        this.graphicBounds = new PRectangle();
+        this.graphicBounds = new ProxyRectangle();
 
         this._sprite = new Sprite(mergedOptions.texture);
         this._sprite.visible = false;
@@ -269,7 +267,7 @@ export abstract class Graphic implements IGraphic {
     public updateGraphicBounds() {
         if(this._disposed) return this;
         
-        this.graphicBounds = new PRectangle(
+        this.graphicBounds = new ProxyRectangle(
             this._sprite.position.x - (this._sprite.anchor.x * (this._sprite.texture.width * this._sprite.scale.x)),
             this._sprite.position.y - (this._sprite.anchor.y * (this._sprite.texture.height * this._sprite.scale.y)),
             this._sprite.texture.width * this._sprite.scale.x,
@@ -279,7 +277,7 @@ export abstract class Graphic implements IGraphic {
         return this;
     }
 
-    public checkGraphicBounds(graphicBounds: PRectangle): void {
+    public checkGraphicBounds(/* graphicBounds: ProxyRectangle */): void {
         // TODO fix this
         this._sprite.visible = true;
     }
@@ -353,6 +351,14 @@ export abstract class Graphic implements IGraphic {
         }
 
         baseTex.hitMap = hitMap;
+    }
+
+    public get alpha() {
+        return this._sprite.alpha;
+    }
+
+    public set alpha(alpha: number) {
+        this._sprite.alpha = alpha;
     }
 
     public dispose(): void {

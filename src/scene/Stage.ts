@@ -1,33 +1,32 @@
-import { ColorMatrixFilter, Container } from "pixi.js";
+import { RedBackgroundFilter } from "debug/filters/RedBackgroundFilter";
+import { Container } from "pixi.js";
 import { Viewport } from 'pixi-viewport';
 
 import { Engine } from '../Engine';
 import { IResetable } from '../interfaces/IResetable';
 import { IGraphic } from '../sprite';
-import { PRectangle } from "./PRectangle";
-import { ReplaceAlphaFilter } from "debug/filters/ReplaceAlphaFilter";
-import { RedBackgroundFilter } from "debug/filters/RedBackgroundFilter";
+import { ProxyRectangle } from "./ProxyRectangle";
 
 export class Stage implements IResetable {
-    private children: IGraphic[];
+    private _children: IGraphic[];
     private _container: Container<any>;
     private _viewport: Viewport;
 
-    private lastHoverTick: number;
-    private minHoverTick: number;
+    private _lastHoverTimestamp: number;
+    private _hoverCheckInterval: number;
 
     private _animationFps: number;
     private _animationFpsInterval: number;
     private _lastAnimationTime: number;
 
     constructor(public engine: Engine, maxAnimationRate: number = 25) {
-        this.children = [];
+        this._children = [];
         this._container = new Container();
 
         // this.inputManager = new InputManager();
 
-        this.lastHoverTick = 0;
-        this.minHoverTick = 30;
+        this._lastHoverTimestamp = 0;
+        this._hoverCheckInterval = 30;
 
         this._animationFps = maxAnimationRate;
         this._animationFpsInterval = 1000 / this._animationFps;
@@ -46,7 +45,7 @@ export class Stage implements IResetable {
             passiveWheel: false,
         });
 
-        this._viewport.filters = [RedBackgroundFilter()]
+        this._viewport.filters = [RedBackgroundFilter()];
 
         this._viewport.drag({
             pressDrag: true
@@ -70,7 +69,7 @@ export class Stage implements IResetable {
     }
 
     public animationTick(now: number) {
-        for(const child of this.children) {
+        for(const child of this._children) {
             if(child.disposed) {
                 continue;
             }
@@ -82,7 +81,7 @@ export class Stage implements IResetable {
 
             // console.log(this._viewport.getGlobalPosition());
 
-            child.checkGraphicBounds(new PRectangle(this._viewport.position.x, this._viewport.position.y, this.engine.renderer.width, this.engine.renderer.height));
+            child.checkGraphicBounds(new ProxyRectangle(this._viewport.position.x, this._viewport.position.y, this.engine.renderer.width, this.engine.renderer.height));
 
             if (!child.needFrameUpdate(now)) continue;
 
@@ -93,7 +92,7 @@ export class Stage implements IResetable {
     public displayTick(delta: number) {
         const now = performance.now();
 
-        for(const child of this.children) {
+        for(const child of this._children) {
             if(child.disposed) {
                 this.removeChild(child);
                 continue;
@@ -117,8 +116,8 @@ export class Stage implements IResetable {
     }
 
     private checkHovered(/*now: number, currentInputs: ICurrentInputs*/) {
-        // if (now - this.lastHoverTick > this.minHoverTick) {
-        //     const hovered = this.children.find((child) => {
+        // if (now - this._lastHoverTimestamp > this._hoverCheckInterval) {
+        //     const hovered = this._children.find((child) => {
         //         if (!child.visible) return false;
         //         return child.getEventCategory() !== EventCategory.NONE && child.checkHover(currentInputs);
         //     });
@@ -129,22 +128,22 @@ export class Stage implements IResetable {
         //         document.body.style.cursor = 'default';
         //     }
         //
-        //     this.lastHoverTick = now;
+        //     this._lastHoverTimestamp = now;
         // }
     }
 
     public addChild(child: IGraphic) {
-        this.children.push(child);
+        this._children.push(child);
         this._viewport.addChild(child.getDisplayableObject());
     }
 
     public removeChild(child: IGraphic) {
-        this.children.splice(this.children.indexOf(child), 1);
+        this._children.splice(this._children.indexOf(child), 1);
         this._viewport.removeChild(child.getDisplayableObject());
     }
 
     public reset() {
-        this.children.forEach(child => child.dispose());
+        this._children.forEach(child => child.dispose());
         this._viewport.removeChildren();
     }
 

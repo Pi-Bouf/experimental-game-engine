@@ -4,9 +4,9 @@ import {
 } from 'pixi.js';
 
 import { AssetsManager, IAssetsManager } from "./assets";
-import { PixiInspector } from "./debug";
-import { Stage } from './geometry';
+import { Inspector } from './debug';
 import { IEngineOption } from './interfaces/IEngineOption';
+import { Stage } from "./scene";
 import { GameTicker } from "./ticker/GameTicker";
 
 export class Engine {
@@ -54,7 +54,7 @@ export class Engine {
             backgroundAlpha: this.options.backgroundAlpha,
             antialias: false,
             roundPixels: true,
-            resolution: window.devicePixelRatio,
+            resolution: 1,
         });
 
         this.canvasContainer = this.options.canvasContainer;
@@ -68,7 +68,7 @@ export class Engine {
         await this.assetsManager.init(this.options.images.baseFiles);
 
         if(this.options.inspector === true) {
-            new PixiInspector(this.stage.viewport);
+            new Inspector(this.stage.viewport);
         }
     }
 
