@@ -2,8 +2,7 @@ import { Sprite } from 'pixi.js';
 
 import { IAssetsManager } from '../../assets/interfaces/IAssetsManager';
 import { ICurrentInputs } from '../../events/interface/ICurrentInputs';
-import { ProxyRectangle } from "../../geometry";
-import { IPosition3D } from '../../geometry/interfaces/IPosition3D';
+import { IPosition3D, ProxyRectangle } from "../../scene";
 
 export interface IGraphic {
     disposed: boolean;

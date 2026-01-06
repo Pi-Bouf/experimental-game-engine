@@ -3,8 +3,8 @@ import { Container } from "pixi.js";
 import { Viewport } from 'pixi-viewport';
 
 import { Engine } from '../Engine';
+import { IGraphic } from '../graphic';
 import { IResetable } from '../interfaces/IResetable';
-import { IGraphic } from '../sprite';
 import { ProxyRectangle } from "./ProxyRectangle";
 
 export class Stage implements IResetable {

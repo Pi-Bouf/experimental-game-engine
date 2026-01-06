@@ -1,7 +1,6 @@
 import { Rectangle, Texture } from 'pixi.js';
 
-import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { Graphic } from '../src/sprite/Graphic';
+import { Graphic, IAssetsManager } from "../src";
 
 export class Effect extends Graphic {
 

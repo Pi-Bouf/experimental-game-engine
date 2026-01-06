@@ -1,4 +1,4 @@
-import { IPosition3D } from '../../../geometry/interfaces/IPosition3D';
+import { IPosition3D } from "../../../scene";
 
 export interface ITweenVars {
     alpha?: number;

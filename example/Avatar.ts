@@ -1,7 +1,6 @@
 import { Texture } from 'pixi.js';
 
-import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { Graphic } from '../src/sprite/Graphic';
+import { Graphic, IAssetsManager } from "../src";
 import { AvatarPositionComputer } from './AvatarPositionComputer';
 import { Action } from './enum/Action';
 import { Direction } from './enum/Direction';
