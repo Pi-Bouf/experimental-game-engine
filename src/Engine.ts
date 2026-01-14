@@ -1,20 +1,20 @@
 import {
     AbstractRenderer, autoDetectRenderer, Container,
-    Renderer, Texture, TexturePool, TextureStyle,
-    Ticker
+    Renderer, Texture, TexturePool, TextureStyle
 } from 'pixi.js';
 
 import { AssetsManager, IAssetsManager } from "./assets";
-import { Stage } from './geometry';
+import { Inspector } from './debug';
 import { IEngineOption } from './interfaces/IEngineOption';
-import { DoubleTicker } from './ticker/DoubleTicker';
+import { Stage } from "./scene";
+import { GameTicker } from "./ticker/GameTicker";
 
 export class Engine {
     public canvasContainer: Element;
     public renderer: Renderer;
     public assetsManager: IAssetsManager;
     public stage: Stage;
-    public ticker: DoubleTicker;
+    public ticker: GameTicker;
     public externalLoopCallback: () => void;
 
     constructor(
@@ -26,9 +26,15 @@ export class Engine {
         // Needed for all other textures to be pixel perfect.
         TextureStyle.defaultOptions.scaleMode = 'nearest';
 
-        // Disable of fucking pixi tickers
-        Ticker.shared.autoStart = false;
-        Ticker.system.autoStart = false;
+        this.assetsManager = this.options.assetsManager ?? new AssetsManager(this.options.images.imageDomain);
+
+        this.stage = new Stage(this, this.options.maxAnimationRate);
+
+        this.ticker = new GameTicker();
+        this.ticker.setFps(options.targetFps ?? 60)
+            .attach((delta) => {
+                this.stage.update(delta);
+            });
     }
 
     public async init() {
@@ -48,29 +54,22 @@ export class Engine {
             backgroundAlpha: this.options.backgroundAlpha,
             antialias: false,
             roundPixels: true,
+            resolution: 1,
         });
-
-        Ticker.shared.stop();
-        Ticker.system.stop();
 
         this.canvasContainer = this.options.canvasContainer;
         this.canvasContainer.innerHTML = '';
         this.canvasContainer.append(this.renderer.canvas);
 
-        this.stage = new Stage(this);
+
         this.stage.initViewport();
-        this.ticker = new DoubleTicker(this.options.maxAnimationRate, this.options.maxDisplayRate);
-        this.ticker.attachCallbacks(() => this.stage.animationTick(), () => {
-            if(this.externalLoopCallback) { this.externalLoopCallback(); }
-
-            this.stage.displayTick();
-        });
-
-        this.assetsManager = this.options.assetsManager ?? new AssetsManager(this.options.images.imageDomain);
-
-        // new PixiInspector(this.stage.container);
+        this.ticker.start();
 
         await this.assetsManager.init(this.options.images.baseFiles);
+
+        if(this.options.inspector === true) {
+            new Inspector(this.stage.viewport);
+        }
     }
 
     public generateTexture(object: Container): Texture {

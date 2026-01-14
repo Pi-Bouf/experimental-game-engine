@@ -1,3 +1,3 @@
 // export * from './filters/DebugFilter';
 export * from './GraphicDebugWhite';
-export * from './inspector/PixiInspector';
+export * from './inspector/Inspector';

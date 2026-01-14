@@ -1,7 +1,6 @@
 import { Rectangle, Texture } from 'pixi.js';
 
-import { IAssetsManager } from '../src/assets/interfaces/IAssetsManager';
-import { Graphic } from '../src/sprite/Graphic';
+import { Graphic, IAssetsManager } from "../src";
 
 export class Effect extends Graphic {
 
@@ -46,12 +45,13 @@ export class Effect extends Graphic {
         }
     }
 
-    needFrameUpdate(): boolean {
+    needFrameUpdate(now: number): boolean {
+        if(!super.needFrameUpdate(now)) return false;
+
         if(this.currentTextures.length === 0) {
             this.dispose();
         }
 
-        // return false;
         return this.currentTextures.length > 0;
     }
 }
