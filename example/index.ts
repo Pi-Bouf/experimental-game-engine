@@ -110,7 +110,7 @@ sandbox.init().then(() => {
             if (angle > Math.PI * 2) {
                 angle -= Math.PI * 2;
             }
-        }, 40); // ~60 FPS
+        }, 10); // ~60 FPS
 
         // Return the interval ID so you can stop it later with clearInterval(interval)
         return interval;

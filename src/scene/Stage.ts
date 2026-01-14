@@ -34,8 +34,8 @@ export class Stage implements IResetable {
     }
 
     public initViewport() {
-        const screenWidth = this.engine.renderer.width;
-        const screenHeight = this.engine.renderer.height;
+        const screenWidth = this.engine.renderer.screen.width;
+        const screenHeight = this.engine.renderer.screen.height;
 
         this._viewport = new Viewport({
             worldWidth: screenWidth,
@@ -45,6 +45,10 @@ export class Stage implements IResetable {
         });
 
         // this._viewport.filters = [RedBackgroundFilter()];
+
+        setInterval(() => {
+            console.log('Visible', this._viewport.children.filter(child => child.visible).length, 'invisible', this._viewport.children.filter(child => !child.visible).length);
+        }, 3000);
 
         this._viewport.drag({
             pressDrag: true
@@ -80,7 +84,12 @@ export class Stage implements IResetable {
 
             // console.log(this._viewport.getGlobalPosition());
 
-            child.checkGraphicBounds(new ProxyRectangle(this._viewport.position.x, this._viewport.position.y, this.engine.renderer.width, this.engine.renderer.height));
+            child.checkGraphicBounds(new ProxyRectangle(
+                -this._viewport.x / this._viewport.scale.x,
+                -this._viewport.y / this._viewport.scale.y,
+                this.engine.renderer.screen.width / this._viewport.scale.x,
+                this.engine.renderer.screen.height / this._viewport.scale.y
+            ));
 
             if (!child.needFrameUpdate(now)) continue;
 
