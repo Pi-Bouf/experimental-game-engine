@@ -1,4 +1,3 @@
-import { RedBackgroundFilter } from "debug/filters/RedBackgroundFilter";
 import { Container } from "pixi.js";
 import { Viewport } from 'pixi-viewport';
 
@@ -45,7 +44,7 @@ export class Stage implements IResetable {
             passiveWheel: false,
         });
 
-        this._viewport.filters = [RedBackgroundFilter()];
+        // this._viewport.filters = [RedBackgroundFilter()];
 
         this._viewport.drag({
             pressDrag: true
