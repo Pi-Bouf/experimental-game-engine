@@ -277,9 +277,13 @@ export abstract class Graphic implements IGraphic {
         return this;
     }
 
-    public checkGraphicBounds(/* graphicBounds: ProxyRectangle */): void {
-        // TODO fix this
-        this._sprite.visible = true;
+    public checkGraphicBounds(viewportBounds: ProxyRectangle): void {
+        this._sprite.visible = (
+            this.graphicBounds.x + this.graphicBounds.width > viewportBounds.x &&
+            this.graphicBounds.x < viewportBounds.x + viewportBounds.width &&
+            this.graphicBounds.y + this.graphicBounds.height > viewportBounds.y &&
+            this.graphicBounds.y < viewportBounds.y + viewportBounds.height
+        );
     }
 
     public follow(graphic: Graphic) {
