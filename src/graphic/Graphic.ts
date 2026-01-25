@@ -95,6 +95,10 @@ export abstract class Graphic implements IGraphic {
         return this;
     }
 
+    public flip() {
+        this._sprite.scale.x *= -1;
+    }
+
     public setAnchor({ xOffset, yPxOffset }: AnchorOptions = { xOffset: 'middle', yPxOffset: 0 }) {
         switch (xOffset) {
             case 'left':

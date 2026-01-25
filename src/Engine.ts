@@ -33,6 +33,10 @@ export class Engine {
         this.ticker = new GameTicker();
         this.ticker.setFps(options.targetFps ?? 60)
             .attach((delta) => {
+                if(this.externalLoopCallback) {
+                    this.externalLoopCallback();
+                }
+
                 this.stage.update(delta);
             });
     }
