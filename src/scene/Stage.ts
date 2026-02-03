@@ -148,6 +148,14 @@ export class Stage implements IResetable {
         this._viewport.removeChild(child.getDisplayableObject());
     }
 
+    public follow(child: IGraphic) {
+        this._viewport.follow(child.getDisplayableObject());
+    }
+
+    public unfollow() {
+        this._viewport.plugins.remove('follow');
+    }
+
     public reset() {
         this._children.forEach(child => child.dispose());
         this._viewport.removeChildren();
