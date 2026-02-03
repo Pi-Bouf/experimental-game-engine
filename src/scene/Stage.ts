@@ -149,7 +149,9 @@ export class Stage implements IResetable {
     }
 
     public follow(child: IGraphic) {
-        this._viewport.follow(child.getDisplayableObject());
+        this._viewport.follow(child.getDisplayableObject(), {
+            radius: 300
+        });
     }
 
     public unfollow() {
