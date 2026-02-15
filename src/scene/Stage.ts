@@ -8,7 +8,7 @@ import { ProxyRectangle } from "./ProxyRectangle";
 
 export class Stage implements IResetable {
     private _children: IGraphic[];
-    private _container: Container<any>;
+    private _container: Container;
     private _viewport: Viewport;
 
     private _lastHoverTimestamp: number;
